@@ -23,7 +23,7 @@ One site that grows lab by lab: Figma design → HTML skeleton → SCSS → JS +
 |---|---|---|
 | 1 — Figma | ✅ | design system (5 colors, Inter text styles, 12/4 col grids), 7 components with variants, 4 pages × desktop 1280 / mobile 360 |
 | 2 — HTML | ✅ | semantic markup of 4 pages, relative navigation, `picture` + `srcset` (WebP + PNG), EJS partials, schema.org microdata, i18n data attributes |
-| 3 — SCSS | ⏳ | |
+| 3 — SCSS | ✅ | SCSS 7-1 + BEM, tokens from Figma, mixins & functions, custom grid mixin, 3 breakpoints, utilities, print styles, animations |
 | 4 — JS + API | ⏳ | |
 
 ### Lab 2 details
@@ -35,6 +35,33 @@ One site that grows lab by lab: Figma design → HTML skeleton → SCSS → JS +
 - **schema.org:** pair cards on Markets use `Product` + `Offer` microdata.
 - **i18n:** every UI string has a key: `data-i18n`, `data-i18n-placeholder`, `data-i18n-aria-label`, `data-i18n-alt`. Texts are in `src/i18n/en.json`.
 - **BEM** class names, no inline styles. Styles are added in Lab 3.
+
+### Lab 3 details — styles
+
+Source SCSS is in `src/styles/` (7-1 architecture), entry point `main.scss` is linked from `src/partials/head.ejs` and compiled by Vite (`sass`).
+
+```
+styles/
+  abstracts/   _variables (Figma tokens: colors, text styles, spaces, breakpoints, grid)
+               _functions (rem, space, c, tint → color-mix, bp)
+               _mixins    (respond, container, flex, grid, text, surface, focus-ring, field-*, radio-tab, animate)
+               _grid      (custom grid: grid-container, grid-row, grid-col with gutters)
+  vendors/     _normalize
+  base/        _reset, _typography, _accessibility, _animations, _utilities, _print
+  layout/      _grid (4 / 8 / 12 columns as CSS variables), _header, _footer, _main
+  components/  _button, _badge, _logo, _nav, _pair-card, _table, _filters, _pagination, _cards
+  pages/       _markets, _trading, _orders, _portfolio
+  themes/      _dark (SCSS color map → CSS custom properties)
+  main.scss
+```
+
+- **Breakpoints (mobile-first):** base styles for 360–390 px, `respond(md)` ≥ 768 px, `respond(lg)` ≥ 1280 px. Grid: 4 cols / gutter 16 / margin 16 → 8 / 24 / 32 → 12 / 24 / 40.
+- **Custom grid mixin (bonus):** `@include grid-row; @include grid-col((xs: 4, md: 8, lg: 8));` — used for hero, cards, trade layout, portfolio, filters and forms. Generic `.row` / `.col-1…12` classes are generated from the same mixins.
+- **Functions:** `rem(24)`, `space(4)`, `c("up")` → `var(--color-up)`, `tint("text", 60%)` → `color-mix(in srgb, var(--color-text) 60%, transparent)`.
+- **Utilities:** spacing `.u-mt-4`, `.u-px-2`, `.u-gap-3`…, visibility `.u-hidden`, `.u-sr-only`, `.u-hide-xs/md/lg`, colors `.u-text-up/down/muted`.
+- **Animations:** keyframes `appear`, `fade`, `slide`; classes `.anim-appear`, `.anim-fade`, `.anim-slide`, `.anim-stagger`; mixin `animate()`; page sections slide in one after another; hover transitions on buttons, cards, rows; `prefers-reduced-motion` respected.
+- **Print:** light colors, navigation / forms / buttons / images hidden, external link URLs printed.
+- **Responsive tables:** less important columns are hidden on phones, tables scroll horizontally if needed.
 
 ## Run locally
 

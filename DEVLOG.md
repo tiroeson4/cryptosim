@@ -17,8 +17,12 @@
   ```
 - Deploy: GitHub Actions builds `dist/` and publishes it to GitHub Pages.
 
-## Week 3
--
+## Week 3 — Lab 3 (SCSS)
+- Rewrote the template styles into full 7-1: abstracts, vendors, base, layout, components, pages, themes.
+- Tokens are the same as in Figma: 5 colors in a Sass map turned into CSS variables by the theme, Inter text styles as a map used by `@include text("h3")`.
+- Custom grid mixins `grid-row` / `grid-col` read columns and gutters from CSS variables that change at 768 and 1280, so one mixin call works on every screen.
+- Problems: header balance did not fit next to the logo on 375 px → label is visually hidden on phones; wide tables → less important columns hidden per breakpoint.
+- Snippet: `tint("text", 60%)` returns `color-mix(in srgb, var(--color-text) 60%, transparent)` — all secondary colors are built from the 5 base ones.
 
 ## Week 4
 -

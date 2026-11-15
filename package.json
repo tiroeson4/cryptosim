@@ -1,6 +1,6 @@
 {
   "name": "cryptosim",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "CryptoSim — crypto exchange simulator (web course labs, topic 8)",
   "type": "module",
