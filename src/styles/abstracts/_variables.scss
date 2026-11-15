@@ -1,14 +1,65 @@
-// _variables.scss
-$u-space-1: 4px;
-$u-space-2: 8px;
-$u-space-3: 12px;
-$u-space-4: 16px;
-$u-space-5: 24px;
+// Design tokens from the Figma design system (Lab 1)
 
-$u-font-base: 16px;
-$u-font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+// 5 base colors
+$colors: (
+  "bg": #0b0e14,
+  "surface": #161b26,
+  "text": #e6e8eb,
+  "up": #16c784,
+  "down": #ea3943,
+);
 
-$u-color-bg: #0f172a;
-$u-color-text: #e2e8f0;
-$u-color-accent: #38bdf8;
-$u-color-muted: #94a3b8;
+// tints = base colors with opacity (built with color-mix in functions)
+$tint-muted: 60%;
+$tint-border: 12%;
+$tint-hover: 6%;
+$tint-soft: 15%;
+
+// typography: name -> (size, line-height, weight), px
+$font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+$font-base: 16;
+$text-styles: (
+  "h1": (32, 40, 700),
+  "h2": (24, 32, 700),
+  "h3": (18, 24, 600),
+  "body": (16, 24, 400),
+  "small": (14, 20, 400),
+  "label": (14, 20, 600),
+  "caption": (12, 16, 500),
+);
+
+// spacing scale (4px rhythm), px
+$spaces: (
+  0: 0,
+  1: 4,
+  2: 8,
+  3: 12,
+  4: 16,
+  5: 24,
+  6: 32,
+  7: 40,
+  8: 48,
+);
+
+// breakpoints: mobile-first, base styles are for 360–390px
+$breakpoints: (
+  "md": 768px,
+  "lg": 1280px,
+);
+
+// grid per breakpoint: columns, gutter, side margin (px)
+$grid: (
+  "xs": (columns: 4, gutter: 16, margin: 16),
+  "md": (columns: 8, gutter: 24, margin: 32),
+  "lg": (columns: 12, gutter: 24, margin: 40),
+);
+$container-max: 1200px;
+
+// shape & motion
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-pill: 999px;
+$duration-fast: 150ms;
+$duration-base: 300ms;
+$ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+$header-height: 64px;

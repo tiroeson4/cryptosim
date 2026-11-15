@@ -1,0 +1,11 @@
+// Dark theme (default): turns SCSS color tokens into CSS custom properties.
+// Another theme would only redefine these variables.
+@use "../abstracts" as *;
+
+:root {
+  color-scheme: dark;
+
+  @each $name, $value in $colors {
+    --color-#{$name}: #{$value};
+  }
+}

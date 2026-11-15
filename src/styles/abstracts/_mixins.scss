@@ -1,21 +1,179 @@
-// _mixins.scss
-@mixin container($max: 1200px) {
-  width: 100%;
-  max-width: $max;
-  margin-inline: auto;
-  padding-inline: 16px;
+@use "sass:map";
+@use "sass:list";
+@use "variables" as *;
+@use "functions" as *;
+
+// ---------- media ----------
+// @include respond(md) { ... }  -> min-width: 768px
+@mixin respond($name) {
+  @media (min-width: bp($name)) {
+    @content;
+  }
 }
 
-@mixin flex-center($gap: 8px) {
+// below a breakpoint: @include respond-down(md) -> max-width: 767.98px
+@mixin respond-down($name) {
+  @media (max-width: (bp($name) - 0.02px)) {
+    @content;
+  }
+}
+
+// ---------- layout ----------
+@mixin container {
+  width: 100%;
+  max-width: calc(#{$container-max} + 2 * var(--grid-margin));
+  margin-inline: auto;
+  padding-inline: var(--grid-margin);
+}
+
+@mixin flex($direction: row, $justify: flex-start, $align: stretch, $gap: 0, $wrap: nowrap) {
   display: flex;
-  align-items: center;
+  flex-flow: $direction $wrap;
+  justify-content: $justify;
+  align-items: $align;
+  @if $gap != 0 {
+    gap: $gap;
+  }
+}
+
+// simple auto grid: equal columns
+@mixin grid($columns: 1, $gap: space(4)) {
+  display: grid;
+  grid-template-columns: repeat($columns, minmax(0, 1fr));
   gap: $gap;
 }
 
-@mixin respond($breakpoint) {
-  @if $breakpoint == md {
-    @media (min-width: 768px) { @content; }
-  } @else if $breakpoint == lg {
-    @media (min-width: 1280px) { @content; }
+// ---------- typography ----------
+@mixin text($name) {
+  $style: map.get($text-styles, $name);
+  @if not $style {
+    @error "Unknown text style `#{$name}`.";
+  }
+  font-size: rem(list.nth($style, 1));
+  line-height: rem(list.nth($style, 2));
+  font-weight: list.nth($style, 3);
+}
+
+// numbers in tables and prices do not jump
+@mixin numeric {
+  font-variant-numeric: tabular-nums;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// ---------- surfaces & states ----------
+@mixin surface($radius: $radius-md) {
+  background: c("surface");
+  border: 1px solid tint("text", $tint-border);
+  border-radius: $radius;
+}
+
+@mixin focus-ring {
+  outline: 2px solid c("up");
+  outline-offset: 2px;
+}
+
+@mixin transition($props...) {
+  transition-property: $props;
+  transition-duration: $duration-fast;
+  transition-timing-function: $ease;
+}
+
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// hide native radio, style the next element as a tab / toggle
+@mixin radio-tab($active-bg, $active-color) {
+  > input {
+    @include visually-hidden;
+  }
+
+  > input + span {
+    display: inline-block;
+    padding: space(2) rem(14);
+    border-radius: $radius-sm;
+    color: tint("text", $tint-muted);
+    cursor: pointer;
+    @include text("label");
+    @include transition(background-color, color);
+  }
+
+  > input + span:hover {
+    background: tint("text", $tint-hover);
+    color: c("text");
+  }
+
+  > input:checked + span {
+    background: $active-bg;
+    color: $active-color;
+  }
+
+  > input:focus-visible + span {
+    @include focus-ring;
+  }
+}
+
+// ---------- forms ----------
+@mixin field-label {
+  display: block;
+  margin-bottom: rem(6);
+  color: tint("text", $tint-muted);
+  @include text("caption");
+}
+
+@mixin field-input {
+  width: 100%;
+  padding: rem(10) rem(14);
+  border: 1px solid tint("text", $tint-border);
+  border-radius: $radius-sm;
+  background: c("bg");
+  color: c("text");
+  @include text("small");
+  @include transition(border-color, box-shadow);
+
+  &::placeholder {
+    color: tint("text", $tint-muted);
+  }
+
+  &:hover {
+    border-color: tint("text", 30%);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: c("up");
+    box-shadow: 0 0 0 3px tint("up", $tint-soft);
+  }
+
+  &:user-invalid {
+    border-color: c("down");
+  }
+}
+
+@mixin field-hint {
+  margin-top: rem(6);
+  color: tint("text", $tint-muted);
+  @include text("caption");
+}
+
+// ---------- animation ----------
+@mixin animate($name, $delay: 0ms, $duration: $duration-base * 2) {
+  animation: $name $duration $ease $delay both;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
   }
 }

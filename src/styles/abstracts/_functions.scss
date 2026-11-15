@@ -1,6 +1,34 @@
-// _functions.scss
 @use "sass:math";
+@use "sass:map";
+@use "variables" as *;
 
-@function rem($px, $base: 16) {
+// px -> rem
+@function rem($px, $base: $font-base) {
   @return math.div($px, $base) * 1rem;
+}
+
+// spacing token -> rem: space(4) = 1rem
+@function space($key) {
+  @if not map.has-key($spaces, $key) {
+    @error "Unknown space `#{$key}`.";
+  }
+  @return rem(map.get($spaces, $key));
+}
+
+// theme color as CSS custom property: c("up") = var(--color-up)
+@function c($name) {
+  @if not map.has-key($colors, $name) {
+    @error "Unknown color `#{$name}`.";
+  }
+  @return var(--color-#{$name});
+}
+
+// semi-transparent color with CSS color-mix(): tint("text", 60%)
+@function tint($name, $amount) {
+  @return color-mix(in srgb, c($name) $amount, transparent);
+}
+
+// breakpoint value by name
+@function bp($name) {
+  @return map.get($breakpoints, $name);
 }

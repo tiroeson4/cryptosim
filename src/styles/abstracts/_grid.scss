@@ -1,0 +1,45 @@
+// Custom grid mixins: container / row / col with gutters (bonus task).
+// Columns, gutter and margins come from CSS custom properties that layout/_grid.scss
+// switches on every breakpoint: 4 cols (mobile) -> 8 cols (768) -> 12 cols (1280).
+@use "sass:map";
+@use "sass:meta";
+@use "variables" as *;
+@use "mixins" as *;
+
+@mixin grid-container {
+  @include container;
+}
+
+// $gap-y: vertical gap between rows, horizontal gap is always the gutter
+@mixin grid-row($gap-y: var(--grid-gutter)) {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  column-gap: var(--grid-gutter);
+  row-gap: $gap-y;
+}
+
+// span: a number (same on all screens) or a map per breakpoint:
+// @include grid-col((xs: 4, md: 8, lg: 8));
+@mixin grid-col($span) {
+  @if meta.type-of($span) == "number" {
+    grid-column: span $span;
+  } @else {
+    @each $name, $n in $span {
+      @if $name == "xs" {
+        grid-column: span $n;
+      } @else {
+        @include respond($name) {
+          grid-column: span $n;
+        }
+      }
+    }
+  }
+}
+
+// grid settings as CSS custom properties for the current breakpoint
+@mixin grid-vars($name) {
+  $g: map.get($grid, $name);
+  --grid-columns: #{map.get($g, columns)};
+  --grid-gutter: #{map.get($g, gutter) * 1px};
+  --grid-margin: #{map.get($g, margin) * 1px};
+}
