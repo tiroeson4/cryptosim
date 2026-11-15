@@ -3,10 +3,11 @@ name: Deploy to GitHub Pages
 # Site layout:
 #   /          -> latest version (main)
 #   /lab2/ ... -> frozen version of each lab, built from git tags lab2, lab3, lab4
+# Runs only from main: the github-pages environment accepts deployments from main only.
+# To publish a new lab: tag it, push the tag, then push main (or run the workflow manually).
 on:
   push:
     branches: [main]
-    tags: ["lab*"]
   workflow_dispatch:
 
 permissions:
