@@ -44,42 +44,67 @@
   }
 }
 
+// One shared grid for the 4 cards, so their edges line up in every row.
+// The wrappers (main / sidebar) keep the HTML semantics, but do not create boxes.
+//   phone:   chart / form / book / trades       (4 cols each)
+//   tablet:  chart / form + book / trades       (8 | 4+4 | 8)
+//   desktop: chart + form / trades + book       (8+4 | 8+4), equal height per row
 .trade {
-  @include grid-row(space(5));
-  align-items: start;
+  @include grid-row(var(--grid-gutter));
+  align-items: stretch;
 
-  &__main {
-    @include grid-col((xs: 4, md: 8, lg: 8));
-    @include flex(column, flex-start, stretch, space(5));
+  &__main,
+  &__sidebar {
+    display: contents;
   }
 
-  // tablet: form and order book side by side, desktop: right column
-  &__sidebar {
-    @include grid-col((xs: 4, md: 8, lg: 4));
-    @include grid(1, space(5));
+  .chart {
+    @include grid-col((xs: 4, md: 8, lg: 8));
+    order: 1;
+  }
 
-    // cards in the sidebar always have equal width and stretch to equal height in a row
-    @include respond(md) {
-      @include grid(2, var(--grid-gutter));
-      align-items: stretch;
-    }
+  .order-form {
+    @include grid-col((xs: 4, md: 4, lg: 4));
+    order: 2;
+  }
+
+  .order-book {
+    @include grid-col((xs: 4, md: 4, lg: 4));
+    order: 3;
 
     @include respond(lg) {
-      @include grid(1, space(5));
+      order: 4;
     }
+  }
 
-    > * {
-      height: 100%;
+  .trades {
+    @include grid-col((xs: 4, md: 8, lg: 8));
+    order: 4;
+
+    @include respond(lg) {
+      order: 3;
     }
   }
 }
 
 .chart {
+  @include flex(column, flex-start, stretch);
   padding: space(4);
   @include surface;
 
   @include respond(md) {
     padding: space(5);
+  }
+
+  // the chart grows to the height of the order form next to it
+  &__figure {
+    @include flex(column, flex-start, stretch);
+    flex: 1;
+  }
+
+  &__picture {
+    flex: 1;
+    min-height: rem(180);
   }
 
   &__header {
@@ -113,6 +138,8 @@
 
   &__img {
     width: 100%;
+    height: 100%;
+    object-fit: fill; // stretch the line chart to the card height, nothing is cropped
     border-radius: $radius-sm;
   }
 
@@ -228,7 +255,42 @@
   }
 }
 
+// Recent trades: same card as the order book, compact rows, title inside
+.trades {
+  @include flex(column, flex-start, stretch);
+  padding: space(5);
+  @include surface;
+
+  &__title {
+    margin-bottom: space(3) !important;
+  }
+
+  .table-wrap {
+    flex: 1;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .table__th,
+  .table__cell {
+    padding-block: space(2);
+  }
+
+  .table__th:first-child,
+  .table__cell:first-child {
+    padding-left: 0;
+  }
+
+  .table__th:last-child,
+  .table__cell:last-child {
+    padding-right: 0;
+  }
+}
+
 .order-book {
+  @include flex(column, flex-start, stretch);
   padding: space(5);
   @include surface;
 
