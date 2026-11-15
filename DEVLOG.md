@@ -25,5 +25,11 @@
 - Problems: header balance did not fit next to the logo on 375 px → label is visually hidden on phones; wide tables → less important columns hidden per breakpoint.
 - Snippet: `tint("text", 60%)` returns `color-mix(in srgb, var(--color-text) 60%, transparent)` — all secondary colors are built from the 5 base ones.
 
-## Week 4
--
+## Week 4 — Lab 4 (JS + API)
+- Class-based app on ES modules: `ItemService` (REST + cache), `ListView` (rows + loading / error / empty states), `Paginator`, `HashRouter`, `FormValidator`, `Dialog`, `PriceChart`, `OrderBook`.
+- Problem: template routes like `"/topic8/pairs": "/t8_pairs"` returned 404 as soon as a query string was added (`?_page=1`). Fixed with one rule `"/topic8/*": "/t8_$1"`.
+- Problem: GitHub Pages has no json-server → the build ships `data/db.json` and `StaticApi` emulates json-server queries; the app switches to it automatically and shows a "Demo mode" banner.
+- Problem: price input with `min="0.0001" step="0.01"` rejected 3215.28 (steps are counted from `min`) → `min` equals `step` now.
+- Problem: `pattern` with `()` inside a character class is invalid in the browser's `v` regex mode, so the check was silently ignored → simplified the pattern.
+- Optimistic UI: the star / "Cancelled" badge changes at once, `PATCH` runs in the background, on error the old state comes back. `?fail=1` simulates server errors for the demo.
+- Snippet: every value in templates is escaped by a tagged template — `html\`<td>${order.symbol}</td>\``.

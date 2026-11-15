@@ -24,7 +24,50 @@ One site that grows lab by lab: Figma design → HTML skeleton → SCSS → JS +
 | 1 — Figma | ✅ | design system (5 colors, Inter text styles, 12/4 col grids), 7 components with variants, 4 pages × desktop 1280 / mobile 360 |
 | 2 — HTML | ✅ | semantic markup of 4 pages, relative navigation, `picture` + `srcset` (WebP + PNG), EJS partials, schema.org microdata, i18n data attributes |
 | 3 — SCSS | ✅ | SCSS 7-1 + BEM, tokens from Figma, mixins & functions, custom grid mixin, 3 breakpoints, utilities, print styles, animations |
-| 4 — JS + API | ⏳ | |
+| 4 — JS + API | ✅ | data from json-server via axios, `ItemService` / `ListView` / `Paginator`, filters, search, sort, pagination, validated forms, cache, loading/error states, hash router, optimistic favorites and cancel with rollback |
+
+### Lab 4 details — JavaScript and API
+
+**Run with the API** (two processes: Vite on 5173 and json-server on 5174):
+
+```bash
+npm install
+npm run dev
+```
+
+json-server alone: `npm run api` (`json-server --watch api/db.json --routes api/routes.json --port 5174`).
+All topic routes go through one rule in `api/routes.json`: `"/topic8/*": "/t8_$1"` — it keeps query strings, so `/topic8/pairs?_page=2&_limit=8&_sort=price` works (the template rules without `*` returned 404 when a query string was present).
+
+**Live preview without a server (demo mode).** GitHub Pages cannot run json-server, so the build publishes a copy of `api/db.json` as `data/db.json`. `src/js/api/backend.js` uses json-server on `localhost` and switches to `StaticApi` when the server is not reachable (or the site is not on localhost). `StaticApi` answers the same queries as json-server (`_page`, `_limit`, `_sort`, `_order`, `q`, `field=value`, `_like`, `_ne`, `_gte`, `_lte`) and saves writes to `localStorage`. A banner under the header says when demo mode is on.
+
+| Requirement | Where |
+|---|---|
+| axios client `api/http.js` | `src/js/api/http.js` (base URL, timeout, `?fail=1` interceptor) |
+| `ItemService`, `ListView`, `Paginator` | `src/js/services/item-service.js`, `src/js/components/list-view.js`, `src/js/components/paginator.js` |
+| filter / search / sort, state in URL | Markets: market tabs, search (debounced), sort; Orders: status tabs, side, search. State lives in the hash: `#/list?market=spot&q=eth&sort=change_desc&page=2` |
+| pagination | `Paginator` on Markets, Orders and Profile → trade history (`_page` / `_limit` + `X-Total-Count`) |
+| form with validation | Trade: order form (`required`, `min`, `step`, `maxlength`, `pattern`, custom "not enough balance" rule) → `POST /topic8/orders`; Profile: settings (`required`, `min`/`max`, `minlength`/`maxlength`, `pattern`) → `localStorage`. `src/js/components/form-validator.js` shows messages under fields with `aria-invalid` |
+| cache | `src/js/core/cache.js` — in-memory cache with TTL 30 s, invalidated after writes |
+| loading / error states | skeleton rows while loading, error row with "Try again", empty state, toasts |
+| hash router | `src/js/core/router.js` — `#/list?...` and `#/item/:id` (pair details on Markets, order details on Orders, `<dialog>`) |
+| optimistic UI with rollback (bonus) | favorites ★ on Markets (`PATCH favorite`), Cancel on Orders (`PATCH status`). Add `?fail=1` to the URL to make every write fail and see the rollback, e.g. `index.html?fail=1` |
+
+**Extra interactivity:** order book updates every 2.5 s and a click on any price fills a limit order with that price; chart intervals 1H / 4H / 1D / 1W redraw the SVG chart, hover shows price and time; Buy / Sell switch the button and the balance check; last side / type are remembered in `localStorage`; burger menu on phones; header balance is calculated from `/topic8/balances` and pair prices.
+
+**JS structure**
+
+```
+src/js/
+  main.js              entry: menu, demo banner, header balance, page controller by <body data-page>
+  api/                 http.js (axios), endpoints.js, backend.js (live/demo), static-api.js
+  core/                cache.js, router.js, store.js, utils.js (safe html`` templates, formatters, storage)
+  services/            item-service.js, index.js (one service per resource, portfolio helper)
+  components/          list-view, paginator, dialog, toast, form-validator, menu, api-status,
+                       price-chart, order-book, renderers
+  pages/               markets.js, trading.js, orders.js, profile.js
+```
+
+All DOM work is our own code (no React / Vue / jQuery); only axios and dayjs are used.
 
 ### Lab 2 details
 
@@ -75,7 +118,7 @@ npm run preview  # serve dist/
 npm run api      # json-server only
 ```
 
-API for this topic (`api/routes.json`): `/topic8/markets`, `/topic8/pairs`, `/topic8/pairs/:id`, `/topic8/orders`, `/topic8/orders/:id`, `/topic8/trades`, `/topic8/balances`.
+API for this topic (`api/routes.json`): `/topic8/markets`, `/topic8/pairs`, `/topic8/pairs/:id`, `/topic8/orders`, `/topic8/orders/:id`, `/topic8/trades`, `/topic8/balances` (all via `"/topic8/*": "/t8_$1"`), plus `/topic8/markets/:id/pairs` and `/topic8/pairs/:id/orders`.
 See [api/API_MAP.md](api/API_MAP.md) for query params (`_page`, `_limit`, `_sort`, `_order`, `q`).
 
 ## Structure
