@@ -107,14 +107,16 @@
     "limit": "Limit",
     "market": "Market",
     "priceLabel": "Price (USDT)",
-    "amountLabel": "Amount (BTC)",
+    "amountLabel": "Amount",
     "amountHint": "Minimum 0.0001 BTC.",
     "available": "Available",
     "total": "Total",
     "submit": "Buy BTC",
     "note": "Orders are simulated. No real funds are used.",
     "orderBook": "Order book",
-    "spread": "Spread"
+    "spread": "Spread",
+    "noteLabel": "Note (optional)",
+    "notePlaceholder": "e.g. take profit #1"
   },
   "orders": {
     "metaTitle": "Orders",
@@ -191,6 +193,7 @@
     "resetAmount": "Starting balance (USDT)",
     "nickname": "Trader nickname",
     "nicknameHint": "3–20 characters: letters, numbers or underscore.",
-    "resetButton": "Reset balance"
+    "resetButton": "Reset balance",
+    "historyPagination": "Trade history pages"
   }
 }

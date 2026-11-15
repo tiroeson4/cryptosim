@@ -3,7 +3,7 @@
   <head>
     <%- include('partials/head', { page: 'markets' }) %>
   </head>
-  <body class="page page--markets">
+  <body class="page page--markets" data-page="markets">
     <%- include('partials/header', { active: 'markets' }) %>
 
     <main class="main container" id="main">
@@ -37,7 +37,7 @@
 
       <section class="movers" aria-labelledby="movers-title">
         <h2 class="movers__title" id="movers-title" data-i18n="markets.topMovers"><%= t('markets.topMovers') %></h2>
-        <ul class="movers__list">
+        <ul class="movers__list" id="movers-list">
           <% topMovers.forEach((pair) => { %>
           <li class="movers__item"><%- include('partials/pair-card', { pair }) %></li>
           <% }) %>
@@ -47,7 +47,7 @@
       <section class="markets" aria-labelledby="markets-title">
         <h2 class="markets__title" id="markets-title" data-i18n="markets.allMarkets"><%= t('markets.allMarkets') %></h2>
 
-        <form class="filters" role="search" action="index.html" method="get" aria-label="<%= t('markets.filtersLabel') %>" data-i18n-aria-label="markets.filtersLabel">
+        <form class="filters" id="markets-filters" role="search" action="index.html" method="get" aria-label="<%= t('markets.filtersLabel') %>" data-i18n-aria-label="markets.filtersLabel">
           <fieldset class="filters__group filters__group--tabs">
             <legend class="filters__legend" data-i18n="markets.market"><%= t('markets.market') %></legend>
             <% ['all', 'spot', 'futures', 'favorites'].forEach((m, i) => { %>
@@ -95,7 +95,7 @@
                 <th class="table__th table__th--action" scope="col" data-i18n="markets.cols.action"><%= t('markets.cols.action') %></th>
               </tr>
             </thead>
-            <tbody class="table__body">
+            <tbody class="table__body" id="pairs-body">
               <% pairs.slice(0, perPage).forEach((p) => { %>
               <tr class="table__row">
                 <th class="table__cell table__cell--pair" scope="row">

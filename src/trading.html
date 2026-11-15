@@ -3,7 +3,7 @@
   <head>
     <%- include('partials/head', { page: 'trading' }) %>
   </head>
-  <body class="page page--trading">
+  <body class="page page--trading" data-page="trading">
     <%- include('partials/header', { active: 'trade' }) %>
     <% const pair = pairs[0]; %>
 
@@ -77,7 +77,7 @@
                     <th class="table__th table__th--action" scope="col" data-i18n="trading.cols.side"><%= t('trading.cols.side') %></th>
                   </tr>
                 </thead>
-                <tbody class="table__body">
+                <tbody class="table__body" id="trades-body">
                   <% tape.forEach((tr) => { %>
                   <tr class="table__row">
                     <td class="table__cell"><time datetime="<%= tr.date %>"><%= fmt.time(tr.date) %></time></td>
@@ -124,11 +124,11 @@
 
               <div class="order-form__field">
                 <label class="order-form__label" for="order-price" data-i18n="trading.priceLabel"><%= t('trading.priceLabel') %></label>
-                <input class="order-form__input" id="order-price" name="price" type="number" inputmode="decimal" min="0.0001" step="0.01" value="<%= pair.price %>" required />
+                <input class="order-form__input" id="order-price" name="price" type="number" inputmode="decimal" min="0.01" step="0.01" value="<%= pair.price %>" required />
               </div>
 
               <div class="order-form__field">
-                <label class="order-form__label" for="order-amount" data-i18n="trading.amountLabel"><%= t('trading.amountLabel') %></label>
+                <label class="order-form__label" for="order-amount"><span data-i18n="trading.amountLabel"><%= t('trading.amountLabel') %></span> (<span data-base><%= pair.base %></span>)</label>
                 <input
                   class="order-form__input"
                   id="order-amount"
@@ -144,10 +144,26 @@
                 <p class="order-form__hint" id="order-amount-hint" data-i18n="trading.amountHint"><%= t('trading.amountHint') %></p>
               </div>
 
+              <div class="order-form__field">
+                <label class="order-form__label" for="order-note" data-i18n="trading.noteLabel"><%= t('trading.noteLabel') %></label>
+                <input
+                  class="order-form__input"
+                  id="order-note"
+                  name="note"
+                  type="text"
+                  maxlength="40"
+                  pattern="[A-Za-z0-9 .,!?\-]*"
+                  data-pattern-message="Use English letters, numbers and basic punctuation."
+                  placeholder="<%= t('trading.notePlaceholder') %>"
+                  data-i18n-placeholder="trading.notePlaceholder"
+                  autocomplete="off"
+                />
+              </div>
+
               <dl class="order-form__summary">
                 <div class="order-form__row">
                   <dt data-i18n="trading.available"><%= t('trading.available') %></dt>
-                  <dd><data value="<%= available %>"><%= fmt.usd(available) %></data> USDT</dd>
+                  <dd id="order-available"><data value="<%= available %>"><%= fmt.usd(available) %></data> USDT</dd>
                 </div>
                 <div class="order-form__row">
                   <dt data-i18n="trading.total"><%= t('trading.total') %></dt>

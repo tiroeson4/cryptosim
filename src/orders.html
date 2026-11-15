@@ -3,7 +3,7 @@
   <head>
     <%- include('partials/head', { page: 'orders' }) %>
   </head>
-  <body class="page page--orders">
+  <body class="page page--orders" data-page="orders">
     <%- include('partials/header', { active: 'orders' }) %>
     <% const statusKind = { open: 'neutral', filled: 'up', cancelled: 'down' }; %>
 
@@ -19,7 +19,7 @@
       <section class="orders" aria-labelledby="orders-list-title">
         <h2 class="orders__title visually-hidden" id="orders-list-title" data-i18n="orders.listTitle"><%= t('orders.listTitle') %></h2>
 
-        <form class="filters" role="search" action="orders.html" method="get" aria-label="<%= t('orders.filtersLabel') %>" data-i18n-aria-label="orders.filtersLabel">
+        <form class="filters" id="orders-filters" role="search" action="orders.html" method="get" aria-label="<%= t('orders.filtersLabel') %>" data-i18n-aria-label="orders.filtersLabel">
           <fieldset class="filters__group filters__group--tabs">
             <legend class="filters__legend" data-i18n="orders.status"><%= t('orders.status') %></legend>
             <% ['all', 'open', 'filled', 'cancelled'].forEach((s, i) => { %>
@@ -70,7 +70,7 @@
                 <th class="table__th table__th--action" scope="col" data-i18n="orders.cols.action"><%= t('orders.cols.action') %></th>
               </tr>
             </thead>
-            <tbody class="table__body">
+            <tbody class="table__body" id="orders-body">
               <% orders.slice(0, perPage).forEach((o) => { %>
               <tr class="table__row" data-order-id="<%= o.id %>">
                 <td class="table__cell table__cell--muted"><time datetime="<%= o.date %>"><%= fmt.dateTime(o.date) %></time></td>
