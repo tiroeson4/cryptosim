@@ -108,7 +108,7 @@
     "market": "Market",
     "priceLabel": "Price (USDT)",
     "amountLabel": "Amount",
-    "amountHint": "Minimum 0.0001 BTC.",
+    "amountHint": "Minimum 0.0001.",
     "available": "Available",
     "total": "Total",
     "submit": "Buy BTC",

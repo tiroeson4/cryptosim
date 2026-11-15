@@ -221,7 +221,6 @@
           <header class="my-orders__header">
             <h2 class="my-orders__title" id="my-orders-title">
               <span data-i18n="trading.myOrders"><%= t('trading.myOrders') %></span>
-              <span class="my-orders__pair" data-pair-symbol><%= pair.symbol %></span>
             </h2>
             <div class="segmented" role="group" aria-label="<%= t('trading.myOrdersFilter') %>" data-i18n-aria-label="trading.myOrdersFilter">
               <button class="segmented__button" type="button" data-orders-filter="open" aria-pressed="true" data-i18n="orders.statuses.open"><%= t('orders.statuses.open') %></button>
@@ -231,10 +230,11 @@
           </header>
           <div class="table-wrap">
             <table class="table my-orders__table">
-              <caption class="table__caption visually-hidden"><%= t('trading.myOrders') %> <%= pair.symbol %></caption>
+              <caption class="table__caption visually-hidden"><%= t('trading.myOrders') %></caption>
               <thead class="table__head">
                 <tr class="table__row">
                   <th class="table__th" scope="col" data-i18n="orders.cols.date"><%= t('orders.cols.date') %></th>
+                  <th class="table__th" scope="col" data-i18n="orders.cols.pair"><%= t('orders.cols.pair') %></th>
                   <th class="table__th" scope="col" data-i18n="orders.cols.side"><%= t('orders.cols.side') %></th>
                   <th class="table__th" scope="col" data-i18n="orders.cols.type"><%= t('orders.cols.type') %></th>
                   <th class="table__th table__th--num" scope="col" data-i18n="orders.cols.price"><%= t('orders.cols.price') %></th>
@@ -244,9 +244,10 @@
                 </tr>
               </thead>
               <tbody class="table__body" id="my-orders-body">
-                <% orders.filter((o) => o.pairId === pair.id && o.status === 'open').forEach((o) => { %>
+                <% orders.filter((o) => o.status === 'open').forEach((o) => { %>
                 <tr class="table__row" data-order-id="<%= o.id %>">
                   <td class="table__cell table__cell--muted"><time datetime="<%= o.date %>"><%= fmt.dateTime(o.date) %></time></td>
+                  <th class="table__cell table__cell--pair" scope="row"><%= o.symbol %></th>
                   <td class="table__cell"><span class="badge badge--<%= o.side === 'buy' ? 'up' : 'down' %>"><%= fmt.cap(o.side) %></span></td>
                   <td class="table__cell"><%= fmt.cap(o.type) %></td>
                   <td class="table__cell table__cell--num"><%= fmt.price(o.price) %></td>

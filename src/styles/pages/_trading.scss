@@ -521,8 +521,8 @@
     padding-right: 0;
   }
 
-  // phones: hide Type (3) and Amount (5)
-  .table :is(th, td):is(:nth-child(3), :nth-child(5)) {
+  // phones: hide Date (1), Type (4) and Amount (6)
+  .table :is(th, td):is(:nth-child(1), :nth-child(4), :nth-child(6)) {
     @include respond-down(md) {
       display: none;
     }

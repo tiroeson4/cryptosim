@@ -1,6 +1,7 @@
 // Trade page: pair from ?pair=ETH-USDT, chart with intervals, live order book,
 // recent trades from the API and the order form (validation + POST /topic8/orders).
-import { balancesService, ordersService, pairsService, tradesService } from "../services/index.js";
+import { balancesService, fillOrder, ordersService, pairsService, tradesService } from "../services/index.js";
+import { updateHeaderBalance } from "../components/header-balance.js";
 import { ListView } from "../components/list-view.js";
 import { FormValidator } from "../components/form-validator.js";
 import { PriceChart } from "../components/price-chart.js";
@@ -30,6 +31,9 @@ const pairBar = (p) => html`
 
 const myOrderRow = (o) => html`<tr class="table__row" data-order-id="${o.id}">
   <td class="table__cell table__cell--muted"><time datetime="${o.date}">${new Date(o.date).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</time></td>
+  <th class="table__cell table__cell--pair" scope="row">
+    <a class="table__pair table__link" href="trading.html?pair=${fmt.slug(o.symbol)}">${coin(o.symbol.split(/[/-]/)[0])}${o.symbol}</a>
+  </th>
   <td class="table__cell">${sideBadge(o.side)}</td>
   <td class="table__cell">${fmt.cap(o.type)}</td>
   <td class="table__cell table__cell--num">${fmt.price(o.price)}</td>
@@ -88,6 +92,7 @@ export async function initTrading() {
   qsa("[data-pair-symbol]").forEach((node) => (node.textContent = pair.symbol));
   qs(".pair-bar").replaceChildren(toNodes(pairBar(pair)));
   qsa("[data-base]").forEach((node) => (node.textContent = pair.base));
+  qs("#order-amount-hint").textContent = `Minimum ${qtyInput.min} ${pair.base}.`;
 
   // ---------- chart ----------
   const chart = new PriceChart(qs(".chart__figure"), { symbol: pair.symbol, price: pair.price, change: pair.change24h, seed: pair.id });
@@ -111,19 +116,18 @@ export async function initTrading() {
   }
   loadTrades();
 
-  // ---------- your orders for this pair: Open / All, cancel without leaving the page ----------
+  // ---------- your orders (all pairs): Open / All, cancel without leaving the page ----------
   const myBody = qs("#my-orders-body");
   const myOrders = new ListView(myBody, {
     renderItem: myOrderRow,
-    columns: 7,
-    emptyText: `No orders for ${pair.symbol} yet. Place one above.`,
+    columns: 8,
+    emptyText: "No orders yet. Place one above.",
   });
   let myFilter = "open";
   async function loadMyOrders() {
     myOrders.showLoading(3);
     try {
       const { items } = await ordersService.list({
-        pairId: pair.id,
         status: myFilter === "open" ? "open" : undefined,
         _sort: "date",
         _order: "desc",
@@ -220,14 +224,17 @@ export async function initTrading() {
     if (!validator.validate()) {
       return;
     }
+    // a limit order at the market price or better fills at once (like on a real exchange)
+    const limit = Number(price().toFixed(pair.price >= 1 ? 2 : 4));
+    const fills = type() === "market" || (side() === "buy" ? limit >= pair.price : limit <= pair.price);
     const order = {
       pairId: pair.id,
       symbol: pair.symbol,
       side: side(),
       type: type(),
-      price: Number(price().toFixed(pair.price >= 1 ? 2 : 4)),
+      price: type() === "market" ? pair.price : limit,
       qty: Number(qtyInput.value),
-      status: type() === "market" ? "filled" : "open",
+      status: fills ? "filled" : "open",
       note: form.elements.note.value.trim() || undefined,
       date: new Date().toISOString(),
     };
@@ -235,6 +242,12 @@ export async function initTrading() {
     submit.textContent = "Placing order…";
     try {
       const created = await ordersService.create(order);
+      if (created.status === "filled") {
+        await fillOrder(created, pair);
+        balances = (await balancesService.list({ userId: 1 }, { fresh: true })).items;
+        updateHeaderBalance();
+        loadTrades();
+      }
       toast(
         html`${fmt.cap(created.side)} ${fmt.qty(created.qty)} ${pair.base} — order #${created.id} ${created.status}.
           <a class="toast__link" href="orders.html#/item/${created.id}">View order</a>`,
