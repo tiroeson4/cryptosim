@@ -129,6 +129,7 @@
 
               <div class="order-form__field">
                 <label class="order-form__label" for="order-amount"><span data-i18n="trading.amountLabel"><%= t('trading.amountLabel') %></span> (<span data-base><%= pair.base %></span>)</label>
+                <div class="order-form__amount" data-field-group>
                 <input
                   class="order-form__input"
                   id="order-amount"
@@ -141,6 +142,8 @@
                   aria-describedby="order-amount-hint"
                   required
                 />
+                <button class="order-form__max" type="button" data-max aria-label="<%= t('trading.maxLabel') %>" data-i18n="trading.max"><%= t('trading.max') %></button>
+                </div>
                 <p class="order-form__hint" id="order-amount-hint" data-i18n="trading.amountHint"><%= t('trading.amountHint') %></p>
               </div>
 

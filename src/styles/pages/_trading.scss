@@ -229,6 +229,34 @@
     @include field-hint;
   }
 
+  // amount field with the "Max" button inside it
+  &__amount {
+    position: relative;
+
+    .order-form__input {
+      padding-right: rem(64);
+    }
+  }
+
+  &__max {
+    position: absolute;
+    top: 50%;
+    right: rem(6);
+    padding: rem(4) space(2);
+    border: 1px solid tint("up", 30%);
+    border-radius: rem(6);
+    background: tint("up", $tint-soft);
+    color: c("up");
+    transform: translateY(-50%);
+    @include text("caption");
+    font-weight: 700;
+    @include transition(background-color);
+
+    &:hover {
+      background: tint("up", 25%);
+    }
+  }
+
   &__summary {
     @include flex(column, flex-start, stretch, space(2));
     @include text("small");

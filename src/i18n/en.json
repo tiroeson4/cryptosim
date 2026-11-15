@@ -119,7 +119,9 @@
     "notePlaceholder": "e.g. take profit #1",
     "myOrders": "Your orders",
     "myOrdersFilter": "Show orders",
-    "allOrders": "All orders →"
+    "allOrders": "All orders →",
+    "max": "Max",
+    "maxLabel": "Use maximum amount"
   },
   "orders": {
     "metaTitle": "Orders",

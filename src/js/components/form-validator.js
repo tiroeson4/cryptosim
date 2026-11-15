@@ -51,7 +51,8 @@ export class FormValidator {
     let node = this.form.querySelector(`#${field.id}-error`);
     if (!node) {
       node = el("p", { id: `${field.id}-error`, className: "form-error" });
-      field.after(node);
+      // fields with an inline button (e.g. "Max") are wrapped: the message goes under the wrapper
+      (field.closest("[data-field-group]") ?? field).after(node);
       const described = field.getAttribute("aria-describedby");
       field.setAttribute("aria-describedby", [described, node.id].filter(Boolean).join(" "));
     }

@@ -208,6 +208,20 @@ export async function initTrading() {
   priceInput.min = priceInput.step;
   updateForm();
 
+  // Max: all USDT for a buy (at the current form price), the whole coin balance for a sell
+  const floor4 = (value) => Math.floor(value * 10_000) / 10_000;
+  qs("[data-max]").addEventListener("click", () => {
+    const max = side() === "buy" ? floor4(balanceOf("USDT") / (price() || pair.price)) : floor4(balanceOf(pair.base));
+    qtyInput.value = max > 0 ? max.toFixed(4) : "";
+    updateForm();
+    if (max > 0) {
+      validator.check(qtyInput);
+    } else {
+      toast(html`You have no ${side() === "buy" ? "USDT" : pair.base} to ${side()}.`, { type: "error" });
+    }
+    qtyInput.focus();
+  });
+
   form.addEventListener("input", updateForm);
   form.addEventListener("change", (event) => {
     if (event.target.name === "side" || event.target.name === "type") {
