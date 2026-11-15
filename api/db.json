@@ -1208,6 +1208,66 @@
       "price": 3183.25,
       "qty": 0.0778,
       "date": "2026-11-05T12:24:00Z"
+    },
+    {
+      "id": 20,
+      "pairId": 1,
+      "symbol": "BTC/USDT",
+      "orderId": null,
+      "side": "sell",
+      "price": 64179.9,
+      "qty": 0.015,
+      "date": "2026-11-15T14:30:12Z"
+    },
+    {
+      "id": 21,
+      "pairId": 1,
+      "symbol": "BTC/USDT",
+      "orderId": null,
+      "side": "buy",
+      "price": 64188.3,
+      "qty": 0.21,
+      "date": "2026-11-15T14:29:47Z"
+    },
+    {
+      "id": 22,
+      "pairId": 1,
+      "symbol": "BTC/USDT",
+      "orderId": null,
+      "side": "sell",
+      "price": 64172.6,
+      "qty": 0.006,
+      "date": "2026-11-15T14:29:20Z"
+    },
+    {
+      "id": 23,
+      "pairId": 1,
+      "symbol": "BTC/USDT",
+      "orderId": null,
+      "side": "sell",
+      "price": 64166.0,
+      "qty": 0.125,
+      "date": "2026-11-15T14:28:58Z"
+    },
+    {
+      "id": 24,
+      "pairId": 1,
+      "symbol": "BTC/USDT",
+      "orderId": null,
+      "side": "buy",
+      "price": 64175.8,
+      "qty": 0.04,
+      "date": "2026-11-15T14:28:31Z"
+    },
+    {
+      "id": 25,
+      "pairId": 1,
+      "symbol": "BTC/USDT",
+      "orderId": null,
+      "side": "buy",
+      "price": 64169.2,
+      "qty": 0.09,
+      "date": "2026-11-15T14:28:05Z"
     }
   ],
   "t9_jobs": [

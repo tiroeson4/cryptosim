@@ -84,7 +84,7 @@
               <tbody class="table__body">
                 <% balances.forEach((b) => { %>
                 <tr class="table__row">
-                  <th class="table__cell table__cell--pair" scope="row"><span class="table__pair"><span class="coin" aria-hidden="true"><%= b.asset.charAt(0) %></span><%= b.asset %></span></th>
+                  <th class="table__cell table__cell--pair" scope="row"><span class="table__pair"><%- include('partials/coin', { asset: b.asset }) %><%= b.asset %></span></th>
                   <td class="table__cell table__cell--num"><data value="<%= b.amount %>"><%= fmt.qty(b.amount) %></data></td>
                   <td class="table__cell table__cell--num"><data value="<%= b.price %>"><%= fmt.price(b.price) %></data></td>
                   <td class="table__cell table__cell--num"><data value="<%= b.value.toFixed(2) %>"><%= fmt.usd(b.value) %></data></td>
@@ -141,7 +141,7 @@
               <% history.slice(0, perPage).forEach((tr) => { %>
               <tr class="table__row">
                 <td class="table__cell table__cell--muted"><time datetime="<%= tr.date %>"><%= fmt.dateTime(tr.date) %></time></td>
-                <th class="table__cell table__cell--pair" scope="row"><span class="table__pair"><span class="coin" aria-hidden="true"><%= tr.symbol.charAt(0) %></span><%= tr.symbol %></span></th>
+                <th class="table__cell table__cell--pair" scope="row"><span class="table__pair"><%- include('partials/coin', { asset: pairById[tr.pairId].base }) %><%= tr.symbol %></span></th>
                 <td class="table__cell">
                   <span class="badge badge--<%= tr.side === 'buy' ? 'up' : 'down' %>" data-i18n="common.<%= tr.side %>"><%= t('common.' + tr.side) %></span>
                 </td>

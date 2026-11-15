@@ -100,7 +100,7 @@
               <tr class="table__row">
                 <th class="table__cell table__cell--pair" scope="row">
                   <span class="table__pair">
-                    <span class="coin" aria-hidden="true"><%= p.base.charAt(0) %></span>
+                    <%- include('partials/coin', { asset: p.base }) %>
                     <span>
                       <a class="table__link" href="trading.html?pair=<%= fmt.slug(p.symbol) %>"><%= p.symbol %></a>
                       <span class="table__sub"><%= p.name %></span>

@@ -28,11 +28,30 @@ const slug = (symbol) => symbol.replace("/", "-");
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 // simple static order book around the last price (replaced by live data in Lab 4)
+// 8 levels per side; depth (1–10) is the cumulative amount relative to the deepest level,
+// it becomes a class order-book__row--depth-N that draws the background bar
 function orderBook(last) {
   const step = last * 0.0001;
-  const amounts = [0.15, 0.082, 0.31, 0.045, 0.12];
-  const asks = amounts.map((a, i) => ({ price: last + step * (5 - i) * 1.2, amount: a })).map((r) => ({ ...r, total: r.price * r.amount }));
-  const bids = [0.22, 0.5, 0.073, 0.19, 0.4].map((a, i) => ({ price: last - step * (i + 0.3) * 1.2, amount: a })).map((r) => ({ ...r, total: r.price * r.amount }));
+  const askAmounts = [0.42, 0.18, 0.073, 0.26, 0.15, 0.082, 0.31, 0.045]; // far -> near
+  const bidAmounts = [0.22, 0.5, 0.073, 0.19, 0.4, 0.066, 0.35, 0.58]; // near -> far
+  const levels = askAmounts.length;
+
+  const withDepth = (rows) => {
+    const max = rows.reduce((s, r) => s + r.amount, 0);
+    let cum = 0;
+    return rows.map((r) => {
+      cum += r.amount;
+      return { ...r, total: r.price * r.amount, depth: Math.max(1, Math.round((cum / max) * 10)) };
+    });
+  };
+
+  // asks: cumulative from the spread upwards, shown far -> near
+  const asks = withDepth(
+    askAmounts
+      .map((amount, i) => ({ price: last + step * (levels - i) * 1.2, amount }))
+      .reverse()
+  ).reverse();
+  const bids = withDepth(bidAmounts.map((amount, i) => ({ price: last - step * (i + 0.3) * 1.2, amount })));
   return { asks, bids, spread: asks[asks.length - 1].price - bids[0].price };
 }
 

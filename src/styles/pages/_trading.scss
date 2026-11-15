@@ -12,6 +12,15 @@
     padding: space(5);
   }
 
+  &__identity {
+    @include flex(row, flex-start, center, space(3));
+  }
+
+  &__coin {
+    width: rem(44);
+    height: rem(44);
+  }
+
   &__heading {
     @include flex(column, flex-start, flex-start, rem(2));
   }
@@ -145,12 +154,34 @@
     }
   }
 
+  // Buy / Sell: big solid tabs like on real exchanges
+  &__group--side {
+    padding: rem(4);
+  }
+
+  &__toggle--buy,
+  &__toggle--sell {
+    > input + span {
+      padding-block: rem(10);
+      @include text("label");
+      font-weight: 700;
+    }
+  }
+
   &__toggle--buy {
-    @include radio-tab(tint("up", $tint-soft), c("up"));
+    @include radio-tab(linear-gradient(180deg, color-mix(in srgb, c("up") 88%, white), c("up")), c("bg"));
+
+    > input:checked + span {
+      box-shadow: 0 6px 18px -8px tint("up", 80%);
+    }
   }
 
   &__toggle--sell {
-    @include radio-tab(tint("down", $tint-soft), c("down"));
+    @include radio-tab(linear-gradient(180deg, color-mix(in srgb, c("down") 88%, white), c("down")), c("bg"));
+
+    > input:checked + span {
+      box-shadow: 0 6px 18px -8px tint("down", 80%);
+    }
   }
 
   &__label {
@@ -214,6 +245,31 @@
   .table__th:not(:first-child),
   .table__cell:not(:first-child) {
     text-align: right;
+  }
+
+  // depth bars: background gradient from the right, width by class depth-1…depth-10
+  &__row {
+    --depth: 0%;
+    --depth-color: transparent;
+    background: linear-gradient(to left, var(--depth-color) var(--depth), transparent var(--depth));
+
+    &--ask {
+      --depth-color: #{tint("down", 12%)};
+    }
+
+    &--bid {
+      --depth-color: #{tint("up", 12%)};
+    }
+
+    &:hover {
+      background-color: tint("text", 5%);
+    }
+  }
+
+  @for $i from 1 through 10 {
+    &__row--depth-#{$i} {
+      --depth: #{$i * 10%};
+    }
   }
 
   &__last {

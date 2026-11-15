@@ -1,22 +1,24 @@
-// Coin avatar: first letter of the asset in a soft circle
+// Coin icon: round SVG logo (src/public/img/coins), decorative
 @use "../abstracts" as *;
 
 .coin {
-  display: inline-grid;
+  display: inline-block;
   flex: none;
-  place-items: center;
   width: rem(28);
   height: rem(28);
+  overflow: hidden;
   border-radius: 50%;
-  background: linear-gradient(135deg, tint("up", 28%), tint("up", 8%));
-  box-shadow: inset 0 0 0 1px tint("up", 30%);
-  color: c("up");
-  font-weight: 700;
-  @include text("caption");
+  background: tint("text", $tint-hover);
+  box-shadow: 0 0 0 1px tint("text", $tint-border);
 
   &--large {
     width: rem(36);
     height: rem(36);
-    @include text("label");
+  }
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 }

@@ -9,11 +9,14 @@
 
     <main class="main container" id="main">
       <section class="pair-bar" aria-labelledby="pair-title">
-        <div class="pair-bar__heading">
-          <h1 class="pair-bar__title" id="pair-title">
-            <span data-i18n="trading.title"><%= t('trading.title') %></span> <%= pair.symbol %>
-          </h1>
-          <p class="pair-bar__name"><%= pair.name %> · <span data-i18n="markets.tabs.spot"><%= t('markets.tabs.spot') %></span></p>
+        <div class="pair-bar__identity">
+          <%- include('partials/coin', { asset: pair.base, large: true, cls: 'pair-bar__coin' }) %>
+          <div class="pair-bar__heading">
+            <h1 class="pair-bar__title" id="pair-title">
+              <span data-i18n="trading.title"><%= t('trading.title') %></span> <%= pair.symbol %>
+            </h1>
+            <p class="pair-bar__name"><%= pair.name %> · <span data-i18n="markets.tabs.spot"><%= t('markets.tabs.spot') %></span></p>
+          </div>
         </div>
         <p class="pair-bar__price pair-bar__price--<%= fmt.trend(pair.change24h) %>">
           <data value="<%= pair.price %>"><%= fmt.price(pair.price) %></data> USDT
@@ -170,7 +173,7 @@
               </thead>
               <tbody class="table__body order-book__asks">
                 <% book.asks.forEach((r) => { %>
-                <tr class="table__row">
+                <tr class="table__row order-book__row order-book__row--ask order-book__row--depth-<%= r.depth %>">
                   <td class="table__cell table__cell--down"><%= fmt.usd(r.price) %></td>
                   <td class="table__cell table__cell--num"><%= fmt.qty(r.amount) %></td>
                   <td class="table__cell table__cell--num"><%= fmt.usd(r.total) %></td>
@@ -187,7 +190,7 @@
               </tbody>
               <tbody class="table__body order-book__bids">
                 <% book.bids.forEach((r) => { %>
-                <tr class="table__row">
+                <tr class="table__row order-book__row order-book__row--bid order-book__row--depth-<%= r.depth %>">
                   <td class="table__cell table__cell--up"><%= fmt.usd(r.price) %></td>
                   <td class="table__cell table__cell--num"><%= fmt.qty(r.amount) %></td>
                   <td class="table__cell table__cell--num"><%= fmt.usd(r.total) %></td>

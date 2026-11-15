@@ -62,6 +62,8 @@ styles/
 - **Animations:** keyframes `appear`, `fade`, `slide`; classes `.anim-appear`, `.anim-fade`, `.anim-slide`, `.anim-stagger`; mixin `animate()`; page sections slide in one after another; hover transitions on buttons, cards, rows; `prefers-reduced-motion` respected.
 - **Print:** light colors, navigation / forms / buttons / images hidden, external link URLs printed.
 - **Responsive tables:** less important columns are hidden on phones, tables scroll horizontally if needed.
+- **Order book:** 8 levels per side with depth bars (`order-book__row--depth-1…10` generated with `@for`).
+- **Coin icons:** partial `src/partials/coin.ejs` + `components/_coin.scss`.
 
 ## Run locally
 
@@ -90,3 +92,8 @@ src/
 templates/data.js data + formatters for EJS
 .github/workflows/deploy.yml   on push: builds main into / and every tag labN into /labN/, deploys to GitHub Pages
 ```
+
+## Credits
+
+- Coin icons: [web3icons](https://github.com/0xa3k5/web3icons) (`@web3icons/core`, MIT), copied as static SVG files to `src/public/img/coins/`.
+- Font: [Inter](https://rsms.me/inter/) via Google Fonts (OFL).
