@@ -22,7 +22,12 @@
 
   &__th,
   &__cell {
-    padding: space(3) space(4);
+    padding: space(3);
+
+    @include respond(md) {
+      padding-inline: space(4);
+    }
+
     border-bottom: 1px solid tint("text", $tint-border);
     text-align: left;
     white-space: nowrap;

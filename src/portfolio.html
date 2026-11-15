@@ -67,7 +67,9 @@
               </tbody>
               <tfoot class="table__foot">
                 <tr class="table__row">
-                  <th class="table__cell" scope="row" colspan="3" data-i18n="portfolio.total"><%= t('portfolio.total') %></th>
+                  <th class="table__cell" scope="row" data-i18n="portfolio.total"><%= t('portfolio.total') %></th>
+                  <td class="table__cell"></td>
+                  <td class="table__cell"></td>
                   <td class="table__cell table__cell--num"><data value="<%= totalBalance.toFixed(2) %>"><%= fmt.usd(totalBalance) %></data></td>
                 </tr>
               </tfoot>
