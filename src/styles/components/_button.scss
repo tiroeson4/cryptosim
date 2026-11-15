@@ -1,12 +1,16 @@
 @use "../abstracts" as *;
 
-@mixin button-variant($bg, $color, $hover-bg, $border: transparent) {
+@mixin button-variant($bg, $color, $hover-bg, $border: transparent, $glow: null) {
   background: $bg;
   color: $color;
   border-color: $border;
 
   &:hover {
     background: $hover-bg;
+
+    @if $glow {
+      box-shadow: 0 8px 24px -8px $glow;
+    }
   }
 }
 
@@ -21,22 +25,35 @@
   white-space: nowrap;
   cursor: pointer;
   @include text("label");
-  @include transition(background-color, border-color, transform);
+  @include transition(background-color, border-color, box-shadow, transform);
 
   &:active {
     transform: translateY(1px);
   }
 
   &--primary {
-    @include button-variant(c("up"), c("bg"), tint("up", 80%));
+    @include button-variant(
+      linear-gradient(180deg, color-mix(in srgb, c("up") 88%, white), c("up")),
+      c("bg"),
+      c("up"),
+      transparent,
+      tint("up", 70%)
+    );
   }
 
+  // secondary looks like a real button: filled surface + border
   &--secondary {
-    @include button-variant(transparent, c("text"), tint("text", $tint-hover), tint("text", $tint-border));
+    @include button-variant(
+      tint("text", 7%),
+      c("text"),
+      tint("text", 12%),
+      tint("text", 16%)
+    );
+    box-shadow: inset 0 1px 0 tint("text", 6%);
   }
 
   &--danger {
-    @include button-variant(c("down"), c("bg"), tint("down", 80%));
+    @include button-variant(c("down"), c("bg"), tint("down", 85%), transparent, tint("down", 70%));
   }
 
   &--small {

@@ -8,7 +8,8 @@
 
   &__group--tabs {
     @include grid-col((xs: 4, md: 8, lg: 5));
-    @include flex(row, flex-start, center, space(1), wrap);
+    @include segmented;
+    justify-self: start;
   }
 
   &__legend {

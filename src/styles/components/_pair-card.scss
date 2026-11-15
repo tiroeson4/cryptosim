@@ -6,15 +6,23 @@
   height: 100%;
   padding: space(4);
   @include surface;
-  @include transition(border-color, transform);
+  @include transition(border-color, box-shadow, transform);
 
   &:hover {
     border-color: tint("up", 50%);
-    transform: translateY(-2px);
+    box-shadow: 0 16px 40px -20px tint("up", 50%);
+    transform: translateY(-3px);
   }
 
   &--down:hover {
     border-color: tint("down", 50%);
+    box-shadow: 0 16px 40px -20px tint("down", 50%);
+  }
+
+  &__coin {
+    position: absolute;
+    top: space(4);
+    right: space(4);
   }
 
   &__title {

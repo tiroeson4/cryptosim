@@ -1,0 +1,22 @@
+// Coin avatar: first letter of the asset in a soft circle
+@use "../abstracts" as *;
+
+.coin {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: rem(28);
+  height: rem(28);
+  border-radius: 50%;
+  background: linear-gradient(135deg, tint("up", 28%), tint("up", 8%));
+  box-shadow: inset 0 0 0 1px tint("up", 30%);
+  color: c("up");
+  font-weight: 700;
+  @include text("caption");
+
+  &--large {
+    width: rem(36);
+    height: rem(36);
+    @include text("label");
+  }
+}

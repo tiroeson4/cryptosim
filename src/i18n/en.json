@@ -15,7 +15,7 @@
     "markets": "Markets",
     "trade": "Trade",
     "orders": "Orders",
-    "portfolio": "Portfolio"
+    "profile": "Profile"
   },
   "footer": {
     "disclaimer": "Educational exchange simulator. No real money involved.",
@@ -36,6 +36,12 @@
     "metaDescription": "Simulated crypto markets: prices, 24h change and volume for 24 trading pairs.",
     "title": "Markets",
     "lead": "Practice trading with virtual funds. All prices are simulated.",
+    "eyebrow": "Crypto exchange simulator",
+    "features": {
+      "pairs": "trading pairs",
+      "balance": "USDT demo balance",
+      "risk": "real money at risk"
+    },
     "startTrading": "Start trading",
     "heroAlt": "Candlestick price chart with a rising trend on a dark background",
     "topMovers": "Top movers",
@@ -146,15 +152,20 @@
     "statusesTitle": "Order statuses",
     "statusHelp": {
       "open": "Waiting in the order book until the price reaches your limit.",
-      "filled": "Executed. The coins are already in your portfolio.",
+      "filled": "Executed. The coins are already in your profile balances.",
       "cancelled": "Removed before execution. Reserved funds were returned."
     }
   },
-  "portfolio": {
-    "metaTitle": "Portfolio",
-    "metaDescription": "Demo balances, asset allocation and trade history of your CryptoSim account.",
-    "title": "Portfolio",
-    "lead": "Your demo balances and trade history.",
+  "profile": {
+    "metaTitle": "Profile",
+    "metaDescription": "Your CryptoSim demo account: balances, asset allocation and trade history.",
+    "title": "Profile",
+    "lead": "Your demo account, balances and trade history.",
+    "memberSince": "Member since",
+    "demoAccount": "Demo account",
+    "trades": "Trades",
+    "winRate": "Win rate",
+    "bestPair": "Best pair",
     "summary": "Summary",
     "totalBalance": "Total balance",
     "startedWith": "Started with 10,000.00 USDT",

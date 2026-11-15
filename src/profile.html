@@ -1,39 +1,65 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <%- include('partials/head', { page: 'portfolio' }) %>
+    <%- include('partials/head', { page: 'profile' }) %>
   </head>
-  <body class="page page--portfolio">
-    <%- include('partials/header', { active: 'portfolio' }) %>
+  <body class="page page--profile">
+    <%- include('partials/header', { active: 'profile' }) %>
 
     <main class="main container" id="main">
-      <section class="page-head" aria-labelledby="portfolio-title">
+      <section class="page-head" aria-labelledby="profile-title">
         <div class="page-head__text">
-          <h1 class="page-head__title" id="portfolio-title" data-i18n="portfolio.title"><%= t('portfolio.title') %></h1>
-          <p class="page-head__lead" data-i18n="portfolio.lead"><%= t('portfolio.lead') %></p>
+          <h1 class="page-head__title" id="profile-title" data-i18n="profile.title"><%= t('profile.title') %></h1>
+          <p class="page-head__lead" data-i18n="profile.lead"><%= t('profile.lead') %></p>
         </div>
       </section>
 
+      <section class="profile-card" aria-labelledby="profile-name">
+        <p class="profile-card__avatar" aria-hidden="true">T</p>
+        <div class="profile-card__info">
+          <h2 class="profile-card__name" id="profile-name">trader_01</h2>
+          <p class="profile-card__meta">
+            <span data-i18n="profile.memberSince"><%= t('profile.memberSince') %></span>
+            <time datetime="2026-09-01">Sep 2026</time>
+            <span class="profile-card__badge badge badge--up" data-i18n="profile.demoAccount"><%= t('profile.demoAccount') %></span>
+          </p>
+        </div>
+        <dl class="profile-card__stats">
+          <div class="profile-card__stat">
+            <dt class="profile-card__stat-label" data-i18n="profile.trades"><%= t('profile.trades') %></dt>
+            <dd class="profile-card__stat-value"><%= history.length %></dd>
+          </div>
+          <div class="profile-card__stat">
+            <dt class="profile-card__stat-label" data-i18n="profile.winRate"><%= t('profile.winRate') %></dt>
+            <dd class="profile-card__stat-value profile-card__stat-value--up">67%</dd>
+          </div>
+          <div class="profile-card__stat">
+            <dt class="profile-card__stat-label" data-i18n="profile.bestPair"><%= t('profile.bestPair') %></dt>
+            <dd class="profile-card__stat-value">BTC/USDT</dd>
+          </div>
+        </dl>
+      </section>
+
       <section class="summary" aria-labelledby="summary-title">
-        <h2 class="summary__title visually-hidden" id="summary-title" data-i18n="portfolio.summary"><%= t('portfolio.summary') %></h2>
+        <h2 class="summary__title visually-hidden" id="summary-title" data-i18n="profile.summary"><%= t('profile.summary') %></h2>
         <ul class="summary__list">
           <li class="summary__item">
             <article class="stat-card">
-              <h3 class="stat-card__label" data-i18n="portfolio.totalBalance"><%= t('portfolio.totalBalance') %></h3>
+              <h3 class="stat-card__label" data-i18n="profile.totalBalance"><%= t('profile.totalBalance') %></h3>
               <p class="stat-card__value"><data value="<%= totalBalance.toFixed(2) %>"><%= fmt.usd(totalBalance) %></data> USDT</p>
-              <p class="stat-card__hint" data-i18n="portfolio.startedWith"><%= t('portfolio.startedWith') %></p>
+              <p class="stat-card__hint" data-i18n="profile.startedWith"><%= t('profile.startedWith') %></p>
             </article>
           </li>
           <li class="summary__item">
             <article class="stat-card">
-              <h3 class="stat-card__label" data-i18n="portfolio.available"><%= t('portfolio.available') %></h3>
+              <h3 class="stat-card__label" data-i18n="profile.available"><%= t('profile.available') %></h3>
               <p class="stat-card__value"><data value="<%= available %>"><%= fmt.usd(available) %></data> USDT</p>
-              <p class="stat-card__hint" data-i18n="portfolio.availableHint"><%= t('portfolio.availableHint') %></p>
+              <p class="stat-card__hint" data-i18n="profile.availableHint"><%= t('profile.availableHint') %></p>
             </article>
           </li>
           <li class="summary__item">
             <article class="stat-card stat-card--up">
-              <h3 class="stat-card__label" data-i18n="portfolio.pnl"><%= t('portfolio.pnl') %></h3>
+              <h3 class="stat-card__label" data-i18n="profile.pnl"><%= t('profile.pnl') %></h3>
               <p class="stat-card__value"><data value="2.15">+2.15%</data></p>
               <p class="stat-card__hint">+262.40 USDT</p>
             </article>
@@ -41,24 +67,24 @@
         </ul>
       </section>
 
-      <div class="portfolio">
-        <section class="balances portfolio__main" aria-labelledby="balances-title">
-          <h2 class="balances__title" id="balances-title" data-i18n="portfolio.balances"><%= t('portfolio.balances') %></h2>
+      <div class="account">
+        <section class="balances account__main" aria-labelledby="balances-title">
+          <h2 class="balances__title" id="balances-title" data-i18n="profile.balances"><%= t('profile.balances') %></h2>
           <div class="table-wrap">
             <table class="table balances__table">
-              <caption class="table__caption visually-hidden" data-i18n="portfolio.balancesCaption"><%= t('portfolio.balancesCaption') %></caption>
+              <caption class="table__caption visually-hidden" data-i18n="profile.balancesCaption"><%= t('profile.balancesCaption') %></caption>
               <thead class="table__head">
                 <tr class="table__row">
-                  <th class="table__th" scope="col" data-i18n="portfolio.cols.asset"><%= t('portfolio.cols.asset') %></th>
-                  <th class="table__th table__th--num" scope="col" data-i18n="portfolio.cols.amount"><%= t('portfolio.cols.amount') %></th>
-                  <th class="table__th table__th--num" scope="col" data-i18n="portfolio.cols.price"><%= t('portfolio.cols.price') %></th>
-                  <th class="table__th table__th--num" scope="col" data-i18n="portfolio.cols.value"><%= t('portfolio.cols.value') %></th>
+                  <th class="table__th" scope="col" data-i18n="profile.cols.asset"><%= t('profile.cols.asset') %></th>
+                  <th class="table__th table__th--num" scope="col" data-i18n="profile.cols.amount"><%= t('profile.cols.amount') %></th>
+                  <th class="table__th table__th--num" scope="col" data-i18n="profile.cols.price"><%= t('profile.cols.price') %></th>
+                  <th class="table__th table__th--num" scope="col" data-i18n="profile.cols.value"><%= t('profile.cols.value') %></th>
                 </tr>
               </thead>
               <tbody class="table__body">
                 <% balances.forEach((b) => { %>
                 <tr class="table__row">
-                  <th class="table__cell table__cell--pair" scope="row"><%= b.asset %></th>
+                  <th class="table__cell table__cell--pair" scope="row"><span class="table__pair"><span class="coin" aria-hidden="true"><%= b.asset.charAt(0) %></span><%= b.asset %></span></th>
                   <td class="table__cell table__cell--num"><data value="<%= b.amount %>"><%= fmt.qty(b.amount) %></data></td>
                   <td class="table__cell table__cell--num"><data value="<%= b.price %>"><%= fmt.price(b.price) %></data></td>
                   <td class="table__cell table__cell--num"><data value="<%= b.value.toFixed(2) %>"><%= fmt.usd(b.value) %></data></td>
@@ -67,7 +93,7 @@
               </tbody>
               <tfoot class="table__foot">
                 <tr class="table__row">
-                  <th class="table__cell" scope="row" data-i18n="portfolio.total"><%= t('portfolio.total') %></th>
+                  <th class="table__cell" scope="row" data-i18n="profile.total"><%= t('profile.total') %></th>
                   <td class="table__cell"></td>
                   <td class="table__cell"></td>
                   <td class="table__cell table__cell--num"><data value="<%= totalBalance.toFixed(2) %>"><%= fmt.usd(totalBalance) %></data></td>
@@ -77,8 +103,8 @@
           </div>
         </section>
 
-        <aside class="allocation portfolio__aside" aria-labelledby="allocation-title">
-          <h2 class="allocation__title" id="allocation-title" data-i18n="portfolio.allocation"><%= t('portfolio.allocation') %></h2>
+        <aside class="allocation account__aside" aria-labelledby="allocation-title">
+          <h2 class="allocation__title" id="allocation-title" data-i18n="profile.allocation"><%= t('profile.allocation') %></h2>
           <ul class="allocation__list">
             <% balances.forEach((b) => { %>
             <li class="allocation__item">
@@ -91,16 +117,16 @@
           <%- include('partials/picture', {
             name: 'portfolio-growth', widths: [360, 720, 1080],
             sizes: '(min-width: 1280px) 384px, (min-width: 768px) 40vw, 100vw',
-            width: 1080, height: 720, altKey: 'portfolio.growthAlt', block: 'allocation'
+            width: 1080, height: 720, altKey: 'profile.growthAlt', block: 'allocation'
           }) %>
         </aside>
       </div>
 
       <section class="history" aria-labelledby="history-title">
-        <h2 class="history__title" id="history-title" data-i18n="portfolio.history"><%= t('portfolio.history') %></h2>
+        <h2 class="history__title" id="history-title" data-i18n="profile.history"><%= t('profile.history') %></h2>
         <div class="table-wrap">
           <table class="table history__table">
-            <caption class="table__caption visually-hidden" data-i18n="portfolio.historyCaption"><%= t('portfolio.historyCaption') %></caption>
+            <caption class="table__caption visually-hidden" data-i18n="profile.historyCaption"><%= t('profile.historyCaption') %></caption>
             <thead class="table__head">
               <tr class="table__row">
                 <th class="table__th" scope="col" data-i18n="orders.cols.date"><%= t('orders.cols.date') %></th>
@@ -108,14 +134,14 @@
                 <th class="table__th" scope="col" data-i18n="orders.cols.side"><%= t('orders.cols.side') %></th>
                 <th class="table__th table__th--num" scope="col" data-i18n="orders.cols.price"><%= t('orders.cols.price') %></th>
                 <th class="table__th table__th--num" scope="col" data-i18n="orders.cols.amount"><%= t('orders.cols.amount') %></th>
-                <th class="table__th table__th--num" scope="col" data-i18n="portfolio.cols.totalUsdt"><%= t('portfolio.cols.totalUsdt') %></th>
+                <th class="table__th table__th--num" scope="col" data-i18n="profile.cols.totalUsdt"><%= t('profile.cols.totalUsdt') %></th>
               </tr>
             </thead>
             <tbody class="table__body">
               <% history.slice(0, perPage).forEach((tr) => { %>
               <tr class="table__row">
                 <td class="table__cell table__cell--muted"><time datetime="<%= tr.date %>"><%= fmt.dateTime(tr.date) %></time></td>
-                <th class="table__cell table__cell--pair" scope="row"><%= tr.symbol %></th>
+                <th class="table__cell table__cell--pair" scope="row"><span class="table__pair"><span class="coin" aria-hidden="true"><%= tr.symbol.charAt(0) %></span><%= tr.symbol %></span></th>
                 <td class="table__cell">
                   <span class="badge badge--<%= tr.side === 'buy' ? 'up' : 'down' %>" data-i18n="common.<%= tr.side %>"><%= t('common.' + tr.side) %></span>
                 </td>
@@ -130,15 +156,15 @@
       </section>
 
       <section class="reset" aria-labelledby="reset-title">
-        <h2 class="reset__title" id="reset-title" data-i18n="portfolio.resetTitle"><%= t('portfolio.resetTitle') %></h2>
-        <p class="reset__text" data-i18n="portfolio.resetText"><%= t('portfolio.resetText') %></p>
-        <form class="reset__form" action="portfolio.html" method="get">
+        <h2 class="reset__title" id="reset-title" data-i18n="profile.resetTitle"><%= t('profile.resetTitle') %></h2>
+        <p class="reset__text" data-i18n="profile.resetText"><%= t('profile.resetText') %></p>
+        <form class="reset__form" action="profile.html" method="get">
           <div class="reset__field">
-            <label class="reset__label" for="reset-amount" data-i18n="portfolio.resetAmount"><%= t('portfolio.resetAmount') %></label>
+            <label class="reset__label" for="reset-amount" data-i18n="profile.resetAmount"><%= t('profile.resetAmount') %></label>
             <input class="reset__input" id="reset-amount" name="amount" type="number" min="100" max="100000" step="100" value="10000" required />
           </div>
           <div class="reset__field">
-            <label class="reset__label" for="reset-nickname" data-i18n="portfolio.nickname"><%= t('portfolio.nickname') %></label>
+            <label class="reset__label" for="reset-nickname" data-i18n="profile.nickname"><%= t('profile.nickname') %></label>
             <input
               class="reset__input"
               id="reset-nickname"
@@ -151,9 +177,9 @@
               aria-describedby="reset-nickname-hint"
               required
             />
-            <p class="reset__hint" id="reset-nickname-hint" data-i18n="portfolio.nicknameHint"><%= t('portfolio.nicknameHint') %></p>
+            <p class="reset__hint" id="reset-nickname-hint" data-i18n="profile.nicknameHint"><%= t('profile.nicknameHint') %></p>
           </div>
-          <button class="reset__submit button button--secondary" type="submit" data-i18n="portfolio.resetButton"><%= t('portfolio.resetButton') %></button>
+          <button class="reset__submit button button--secondary" type="submit" data-i18n="profile.resetButton"><%= t('profile.resetButton') %></button>
         </form>
       </section>
     </main>

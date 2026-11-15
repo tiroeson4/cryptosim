@@ -24,13 +24,15 @@
     min-width: space(7);
     height: space(7);
     padding-inline: space(3);
-    border: 1px solid tint("text", $tint-border);
+    border: 1px solid tint("text", 16%);
     border-radius: $radius-sm;
+    background: tint("text", 7%);
+    box-shadow: inset 0 1px 0 tint("text", 6%);
     @include text("label");
     @include transition(background-color, border-color);
 
     &:hover {
-      background: tint("text", $tint-hover);
+      background: tint("text", 12%);
     }
 
     &--active,
@@ -43,6 +45,7 @@
     &--disabled,
     &--disabled:hover {
       background: transparent;
+      box-shadow: none;
       color: tint("text", 35%);
       cursor: not-allowed;
     }

@@ -15,7 +15,7 @@ One site that grows lab by lab: Figma design → HTML skeleton → SCSS → JS +
 | Markets | `src/index.html` | top movers, list of 24 pairs with filter / search / sort, pagination |
 | Trade | `src/trading.html` | pair stats, price chart, recent trades, order form, order book |
 | Orders | `src/orders.html` | orders table with status/side filters, cancel button, pagination |
-| Portfolio | `src/portfolio.html` | balances, allocation, trade history, "reset demo balance" form |
+| Profile | `src/profile.html` | account card, balances, allocation, trade history, "reset demo account" form |
 
 ## Progress
 
@@ -49,8 +49,8 @@ styles/
   vendors/     _normalize
   base/        _reset, _typography, _accessibility, _animations, _utilities, _print
   layout/      _grid (4 / 8 / 12 columns as CSS variables), _header, _footer, _main
-  components/  _button, _badge, _logo, _nav, _pair-card, _table, _filters, _pagination, _cards
-  pages/       _markets, _trading, _orders, _portfolio
+  components/  _button, _badge, _logo, _nav, _pair-card, _coin, _table, _filters, _pagination, _cards
+  pages/       _markets, _trading, _orders, _profile
   themes/      _dark (SCSS color map → CSS custom properties)
   main.scss
 ```
@@ -81,7 +81,7 @@ See [api/API_MAP.md](api/API_MAP.md) for query params (`_page`, `_limit`, `_sort
 ```
 api/              db.json + routes.json for json-server
 src/
-  index.html, trading.html, orders.html, portfolio.html
+  index.html, trading.html, orders.html, profile.html
   partials/       EJS partials (header, footer, cards, picture, pagination)
   i18n/en.json    UI strings
   public/         favicon, img/ (webp + png, 3 widths each)

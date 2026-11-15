@@ -6,7 +6,7 @@ import { createTemplateData } from "./templates/data.js";
 
 const projectDir = dirname(fileURLToPath(import.meta.url));
 const srcDir = resolve(projectDir, "src");
-const pages = ["index", "trading", "orders", "portfolio"];
+const pages = ["index", "trading", "orders", "profile"];
 
 // Server-side templating: every HTML page is rendered with EJS before Vite processes it,
 // so header, footer and cards live in src/partials and are reused on all pages.

@@ -1,5 +1,72 @@
 @use "../abstracts" as *;
 
+.profile-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: space(4);
+  padding: space(5);
+  @include surface;
+  background:
+    radial-gradient(500px 200px at 0% 0%, tint("up", 12%), transparent 70%),
+    c("surface");
+
+  @include respond(md) {
+    grid-template-columns: auto 1fr auto;
+    gap: space(5);
+  }
+
+  &__avatar {
+    display: grid;
+    place-items: center;
+    width: rem(64);
+    height: rem(64);
+    border-radius: 50%;
+    background: linear-gradient(135deg, c("up"), color-mix(in srgb, c("up") 50%, c("bg")));
+    box-shadow: 0 0 0 4px tint("up", 15%);
+    color: c("bg");
+    @include text("h2");
+  }
+
+  &__info {
+    @include flex(column, flex-start, flex-start, space(1));
+  }
+
+  &__meta {
+    @include flex(row, flex-start, center, space(2), wrap);
+    color: tint("text", $tint-muted);
+    @include text("small");
+  }
+
+  &__stats {
+    grid-column: 1 / -1;
+    @include grid(3, space(3));
+    padding-top: space(4);
+    border-top: 1px solid tint("text", $tint-border);
+
+    @include respond(md) {
+      grid-column: auto;
+      @include flex(row, flex-end, center, space(6));
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
+
+  &__stat-label {
+    color: tint("text", $tint-muted);
+    @include text("caption");
+  }
+
+  &__stat-value {
+    @include text("h3");
+    @include numeric;
+
+    &--up {
+      color: c("up");
+    }
+  }
+}
+
 // 1 card per row on phones, 3 in a row from tablet
 .summary__list {
   @include grid(1, space(3));
@@ -9,7 +76,7 @@
   }
 }
 
-.portfolio {
+.account {
   @include grid-row(space(6));
   align-items: start;
 

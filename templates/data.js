@@ -59,7 +59,7 @@ export function createTemplateData() {
       { id: "markets", href: "index.html" },
       { id: "trade", href: "trading.html" },
       { id: "orders", href: "orders.html" },
-      { id: "portfolio", href: "portfolio.html" },
+      { id: "profile", href: "profile.html" },
     ],
     year: 2026,
     perPage: PER_PAGE,

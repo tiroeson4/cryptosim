@@ -1,5 +1,6 @@
 <%# Pair card with schema.org Product + Offer microdata %>
 <article class="pair-card pair-card--<%= fmt.trend(pair.change24h) %>" itemscope itemtype="https://schema.org/Product">
+  <span class="pair-card__coin coin coin--large" aria-hidden="true"><%= pair.base.charAt(0) %></span>
   <h3 class="pair-card__title">
     <a class="pair-card__link" href="trading.html?pair=<%= fmt.slug(pair.symbol) %>" itemprop="url">
       <span itemprop="name"><%= pair.symbol %></span>

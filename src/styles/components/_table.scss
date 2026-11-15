@@ -80,6 +80,10 @@
     color: tint("text", $tint-muted);
   }
 
+  &__pair {
+    @include flex(row, flex-start, center, rem(10));
+  }
+
   &__link {
     @include transition(color);
 

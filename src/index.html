@@ -9,9 +9,24 @@
     <main class="main container" id="main">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero__content">
+          <p class="hero__eyebrow" data-i18n="markets.eyebrow"><%= t('markets.eyebrow') %></p>
           <h1 class="hero__title" id="hero-title" data-i18n="markets.title"><%= t('markets.title') %></h1>
           <p class="hero__text" data-i18n="markets.lead"><%= t('markets.lead') %></p>
           <a class="hero__button button button--primary" href="trading.html" data-i18n="markets.startTrading"><%= t('markets.startTrading') %></a>
+          <ul class="hero__features">
+            <li class="hero__feature">
+              <strong class="hero__feature-value"><%= pairs.length %></strong>
+              <span class="hero__feature-text" data-i18n="markets.features.pairs"><%= t('markets.features.pairs') %></span>
+            </li>
+            <li class="hero__feature">
+              <strong class="hero__feature-value">10,000</strong>
+              <span class="hero__feature-text" data-i18n="markets.features.balance"><%= t('markets.features.balance') %></span>
+            </li>
+            <li class="hero__feature">
+              <strong class="hero__feature-value">0</strong>
+              <span class="hero__feature-text" data-i18n="markets.features.risk"><%= t('markets.features.risk') %></span>
+            </li>
+          </ul>
         </div>
         <%- include('partials/picture', {
           name: 'markets-hero', widths: [480, 800, 1200],
@@ -84,8 +99,13 @@
               <% pairs.slice(0, perPage).forEach((p) => { %>
               <tr class="table__row">
                 <th class="table__cell table__cell--pair" scope="row">
-                  <a class="table__link" href="trading.html?pair=<%= fmt.slug(p.symbol) %>"><%= p.symbol %></a>
-                  <span class="table__sub"><%= p.name %></span>
+                  <span class="table__pair">
+                    <span class="coin" aria-hidden="true"><%= p.base.charAt(0) %></span>
+                    <span>
+                      <a class="table__link" href="trading.html?pair=<%= fmt.slug(p.symbol) %>"><%= p.symbol %></a>
+                      <span class="table__sub"><%= p.name %></span>
+                    </span>
+                  </span>
                 </th>
                 <td class="table__cell table__cell--num"><data value="<%= p.price %>"><%= fmt.price(p.price) %></data></td>
                 <td class="table__cell table__cell--num">

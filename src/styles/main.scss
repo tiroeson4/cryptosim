@@ -23,6 +23,7 @@
 
 @use "components/button";
 @use "components/badge";
+@use "components/coin";
 @use "components/logo";
 @use "components/nav";
 @use "components/pair-card";
@@ -34,7 +35,7 @@
 @use "pages/markets";
 @use "pages/trading";
 @use "pages/orders";
-@use "pages/portfolio";
+@use "pages/profile";
 
 // utilities and print go last so they can override components
 @use "base/utilities";
