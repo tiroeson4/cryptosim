@@ -15,7 +15,7 @@
   backdrop-filter: blur(8px);
 
   &__inner {
-    @include flex(row, space-between, center, space(3) space(4), wrap);
+    @include flex(row, space-between, center, space(3), wrap);
     padding-block: space(3);
 
     @include respond(md) {
@@ -53,5 +53,82 @@
   // the menu button needs JS (Lab 4), until then the nav is always visible
   &__menu-button {
     display: none;
+  }
+}
+
+// ---------- Lab 4: burger menu on phones (needs JS, html.js) ----------
+.header__menu-icon {
+  position: relative;
+  display: block;
+  width: rem(18);
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  @include transition(background-color);
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    @include transition(transform);
+  }
+
+  &::before {
+    top: -6px;
+  }
+
+  &::after {
+    top: 6px;
+  }
+}
+
+@include respond-down(md) {
+  .js .header__menu-button {
+    display: grid;
+    place-items: center;
+    order: 3;
+    width: space(7);
+    height: space(7);
+    border: 1px solid tint("text", 16%);
+    border-radius: $radius-sm;
+    background: tint("text", 7%);
+    color: c("text");
+  }
+
+  .js .header__nav {
+    order: 4;
+    display: none;
+  }
+
+  .js .header--menu-open .header__nav {
+    display: block;
+    @include animate(slide, 0ms, $duration-base);
+  }
+
+  .js .header--menu-open .nav__list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .js .header--menu-open .header__menu-icon {
+    background: transparent;
+
+    &::before {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    &::after {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+  }
+
+  // logo left, balance + burger right
+  .js .header__logo {
+    margin-right: auto;
   }
 }

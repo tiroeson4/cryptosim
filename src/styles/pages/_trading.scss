@@ -346,3 +346,127 @@
     @include text("caption");
   }
 }
+
+// ---------- JS chart (Lab 4): SVG area chart with hover tooltip ----------
+.chart__canvas {
+  position: relative;
+  flex: 1;
+  min-height: rem(220);
+  overflow: hidden;
+  border-radius: $radius-sm;
+  background: c("bg");
+  cursor: crosshair;
+}
+
+.chart__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  --chart-color: #{c("up")};
+
+  &--down {
+    --chart-color: #{c("down")};
+  }
+}
+
+.chart__grid {
+  stroke: tint("text", 8%);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.chart__stop--top {
+  stop-color: var(--chart-color);
+  stop-opacity: 0.3;
+}
+
+.chart__stop--bottom {
+  stop-color: var(--chart-color);
+  stop-opacity: 0;
+}
+
+.chart__area {
+  fill: url("#chart-fill");
+}
+
+.chart__line {
+  fill: none;
+  stroke: var(--chart-color);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.chart__cursor {
+  stroke: tint("text", 35%);
+  stroke-dasharray: 4 4;
+}
+
+.chart__label {
+  position: absolute;
+  right: space(2);
+  padding: rem(2) rem(6);
+  border-radius: rem(4);
+  background: tint("text", 8%);
+  color: tint("text", $tint-muted);
+  pointer-events: none;
+  @include text("caption");
+  @include numeric;
+
+  &--max {
+    top: space(2);
+  }
+
+  &--min {
+    bottom: space(2);
+  }
+}
+
+.chart__tooltip {
+  position: absolute;
+  top: var(--y, 0);
+  left: var(--x, 0);
+  @include flex(column, flex-start, center, rem(2));
+  padding: rem(6) space(3);
+  border: 1px solid tint("text", $tint-border);
+  border-radius: $radius-sm;
+  background: c("surface");
+  box-shadow: 0 8px 24px -8px rgb(0 0 0 / 0.7);
+  transform: translate(-50%, calc(-100% - 12px));
+  pointer-events: none;
+  white-space: nowrap;
+  @include text("caption");
+  @include numeric;
+
+  &[hidden] {
+    display: none;
+  }
+
+  strong {
+    @include text("label");
+  }
+}
+
+// ---------- order book prices are buttons: click -> limit price ----------
+.order-book__price {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  @include numeric;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &--last {
+    color: c("up");
+    @include text("h3");
+  }
+}
+
+.order-book__row:has(.order-book__price:hover) {
+  background-color: tint("text", 6%);
+}

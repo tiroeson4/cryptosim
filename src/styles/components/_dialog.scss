@@ -1,0 +1,91 @@
+@use "../abstracts" as *;
+
+.dialog {
+  width: min(100% - 2 * var(--grid-margin), rem(480));
+  max-height: calc(100vh - 2 * space(5));
+  padding: 0;
+  border: 1px solid tint("text", $tint-border);
+  border-radius: $radius-md;
+  background: c("surface");
+  color: c("text");
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.8);
+
+  &[open] {
+    @include animate(appear, 0ms, $duration-base);
+  }
+
+  &::backdrop {
+    background: rgb(5 7 10 / 0.7);
+    backdrop-filter: blur(4px);
+  }
+
+  &__header {
+    @include flex(row, flex-start, center, space(3));
+    padding: space(5) space(5) 0;
+  }
+
+  &__heading {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    @include text("h3");
+  }
+
+  &__subtitle {
+    color: tint("text", $tint-muted);
+    @include text("small");
+  }
+
+  &__close {
+    display: grid;
+    place-items: center;
+    width: space(7);
+    height: space(7);
+    border: 1px solid tint("text", 16%);
+    border-radius: $radius-sm;
+    background: tint("text", 7%);
+    color: c("text");
+    font-size: rem(22);
+    line-height: 1;
+    @include transition(background-color);
+
+    &:hover {
+      background: tint("text", 12%);
+    }
+  }
+
+  &__body {
+    padding: space(5);
+  }
+
+  &__stats {
+    @include grid(2, space(4) space(5));
+  }
+
+  &__stat-label {
+    color: tint("text", $tint-muted);
+    @include text("caption");
+  }
+
+  &__stat-value {
+    margin-top: rem(2);
+    @include text("label");
+    @include numeric;
+
+    &--up {
+      color: c("up");
+    }
+
+    &--down {
+      color: c("down");
+    }
+  }
+
+  &__actions {
+    @include flex(row, flex-end, center, space(3), wrap);
+    padding: space(4) space(5) space(5);
+    border-top: 1px solid tint("text", $tint-border);
+  }
+}

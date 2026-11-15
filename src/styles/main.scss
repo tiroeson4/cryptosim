@@ -31,6 +31,9 @@
 @use "components/filters";
 @use "components/pagination";
 @use "components/cards";
+@use "components/star";
+@use "components/dialog";
+@use "components/feedback";
 
 @use "pages/markets";
 @use "pages/trading";

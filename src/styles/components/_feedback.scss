@@ -1,0 +1,181 @@
+// Loading, error and empty states, toasts, demo-mode banner
+@use "../abstracts" as *;
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton {
+  display: block;
+  height: rem(14);
+  border-radius: $radius-sm;
+  background: linear-gradient(90deg, tint("text", 5%) 25%, tint("text", 12%) 50%, tint("text", 5%) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.2s linear infinite;
+
+  &--card {
+    height: rem(150);
+    border-radius: $radius-md;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+.table__state {
+  padding: space(6) space(4);
+  text-align: center;
+  color: tint("text", $tint-muted);
+
+  &--error {
+    color: c("text");
+  }
+}
+
+.state-message {
+  display: block;
+  margin-bottom: space(3);
+}
+
+.table__state--error .state-message,
+.list-state--error .state-message {
+  color: c("down");
+}
+
+.list-state {
+  grid-column: 1 / -1;
+  padding: space(5);
+  color: tint("text", $tint-muted);
+  text-align: center;
+
+  &--skeleton {
+    grid-column: auto;
+    padding: 0;
+
+    @include respond-down(md) {
+      grid-column: span 2;
+    }
+
+    @include respond(lg) {
+      grid-column: span 3;
+    }
+  }
+}
+
+// ---------- toasts ----------
+.toasts {
+  position: fixed;
+  right: var(--grid-margin);
+  bottom: space(5);
+  left: var(--grid-margin);
+  z-index: 50;
+  @include flex(column, flex-end, flex-end, space(2));
+  pointer-events: none;
+
+  @include respond(md) {
+    left: auto;
+    width: rem(380);
+  }
+}
+
+.toast {
+  width: 100%;
+  padding: space(3) space(4);
+  border: 1px solid tint("text", $tint-border);
+  border-left: 3px solid c("text");
+  border-radius: $radius-sm;
+  background: c("surface");
+  box-shadow: 0 16px 40px -12px rgb(0 0 0 / 0.7);
+  pointer-events: auto;
+  @include text("small");
+  @include animate(slide, 0ms, $duration-base);
+
+  &--success {
+    border-left-color: c("up");
+  }
+
+  &--error {
+    border-left-color: c("down");
+  }
+
+  &--hide {
+    animation: fade $duration-base $ease reverse forwards;
+  }
+
+  &__link {
+    margin-left: space(1);
+    color: c("up");
+    font-weight: 600;
+    text-decoration: underline;
+  }
+}
+
+// ---------- demo-mode banner ----------
+.api-status {
+  border-bottom: 1px solid tint("up", 20%);
+  background: tint("up", 8%);
+
+  &[hidden] {
+    display: none;
+  }
+
+  &__inner {
+    @include flex(row, flex-start, center, space(3));
+    padding-block: space(2);
+  }
+
+  &__dot {
+    flex: none;
+    width: space(2);
+    height: space(2);
+    border-radius: 50%;
+    background: c("up");
+    box-shadow: 0 0 0 4px tint("up", 20%);
+  }
+
+  &__text {
+    color: tint("text", 80%);
+    @include text("caption");
+
+    code {
+      color: c("up");
+    }
+  }
+}
+
+// ---------- form errors ----------
+.form-error {
+  margin-top: rem(6);
+  color: c("down");
+  @include text("caption");
+
+  &:empty {
+    display: none;
+  }
+}
+
+[aria-invalid="true"] {
+  border-color: c("down") !important;
+  box-shadow: 0 0 0 3px tint("down", $tint-soft) !important;
+}
+
+@keyframes flash {
+  from {
+    box-shadow: 0 0 0 4px tint("up", 50%);
+  }
+
+  to {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.is-flash {
+  animation: flash 900ms $ease;
+}

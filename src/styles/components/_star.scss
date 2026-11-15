@@ -1,0 +1,40 @@
+// Favorite toggle (aria-pressed)
+@use "../abstracts" as *;
+
+.star {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: space(6);
+  height: space(6);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: tint("text", 35%);
+  @include transition(color, background-color, transform);
+
+  &__icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+  }
+
+  &:hover {
+    background: tint("text", $tint-hover);
+    color: c("text");
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  &[aria-pressed="true"] {
+    color: $favorite;
+
+    .star__icon {
+      fill: currentColor;
+    }
+  }
+}
