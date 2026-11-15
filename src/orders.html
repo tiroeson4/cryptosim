@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('partials/head', { page: 'orders' }) %>
+  </head>
+  <body class="page page--orders">
+    <%- include('partials/header', { active: 'orders' }) %>
+    <% const statusKind = { open: 'neutral', filled: 'up', cancelled: 'down' }; %>
+
+    <main class="main container" id="main">
+      <section class="page-head" aria-labelledby="orders-title">
+        <div class="page-head__text">
+          <h1 class="page-head__title" id="orders-title" data-i18n="orders.title"><%= t('orders.title') %></h1>
+          <p class="page-head__lead" data-i18n="orders.lead"><%= t('orders.lead') %></p>
+        </div>
+        <a class="page-head__action button button--primary" href="trading.html" data-i18n="orders.newOrder"><%= t('orders.newOrder') %></a>
+      </section>
+
+      <section class="orders" aria-labelledby="orders-list-title">
+        <h2 class="orders__title visually-hidden" id="orders-list-title" data-i18n="orders.listTitle"><%= t('orders.listTitle') %></h2>
+
+        <form class="filters" role="search" action="orders.html" method="get" aria-label="<%= t('orders.filtersLabel') %>" data-i18n-aria-label="orders.filtersLabel">
+          <fieldset class="filters__group filters__group--tabs">
+            <legend class="filters__legend" data-i18n="orders.status"><%= t('orders.status') %></legend>
+            <% ['all', 'open', 'filled', 'cancelled'].forEach((s, i) => { %>
+            <label class="filters__tab">
+              <input class="filters__radio" type="radio" name="status" value="<%= s %>" <%= i === 0 ? 'checked' : '' %> />
+              <span class="filters__tab-text" data-i18n="orders.statuses.<%= s %>"><%= t('orders.statuses.' + s) %></span>
+            </label>
+            <% }) %>
+          </fieldset>
+
+          <div class="filters__field">
+            <label class="filters__label" for="order-search" data-i18n="orders.search"><%= t('orders.search') %></label>
+            <input
+              class="filters__input"
+              id="order-search"
+              type="search"
+              name="q"
+              placeholder="<%= t('orders.searchPlaceholder') %>"
+              data-i18n-placeholder="orders.searchPlaceholder"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="filters__field">
+            <label class="filters__label" for="order-side" data-i18n="trading.side"><%= t('trading.side') %></label>
+            <select class="filters__select" id="order-side" name="side">
+              <option value="all" data-i18n="orders.allSides"><%= t('orders.allSides') %></option>
+              <option value="buy" data-i18n="common.buy"><%= t('common.buy') %></option>
+              <option value="sell" data-i18n="common.sell"><%= t('common.sell') %></option>
+            </select>
+          </div>
+
+          <button class="filters__submit button button--secondary" type="submit" data-i18n="common.apply"><%= t('common.apply') %></button>
+        </form>
+
+        <div class="table-wrap">
+          <table class="table orders__table">
+            <caption class="table__caption" data-i18n="orders.tableCaption"><%= t('orders.tableCaption') %></caption>
+            <thead class="table__head">
+              <tr class="table__row">
+                <th class="table__th" scope="col" data-i18n="orders.cols.date"><%= t('orders.cols.date') %></th>
+                <th class="table__th" scope="col" data-i18n="orders.cols.pair"><%= t('orders.cols.pair') %></th>
+                <th class="table__th" scope="col" data-i18n="orders.cols.side"><%= t('orders.cols.side') %></th>
+                <th class="table__th" scope="col" data-i18n="orders.cols.type"><%= t('orders.cols.type') %></th>
+                <th class="table__th table__th--num" scope="col" data-i18n="orders.cols.price"><%= t('orders.cols.price') %></th>
+                <th class="table__th table__th--num" scope="col" data-i18n="orders.cols.amount"><%= t('orders.cols.amount') %></th>
+                <th class="table__th" scope="col" data-i18n="orders.cols.status"><%= t('orders.cols.status') %></th>
+                <th class="table__th table__th--action" scope="col" data-i18n="orders.cols.action"><%= t('orders.cols.action') %></th>
+              </tr>
+            </thead>
+            <tbody class="table__body">
+              <% orders.slice(0, perPage).forEach((o) => { %>
+              <tr class="table__row" data-order-id="<%= o.id %>">
+                <td class="table__cell table__cell--muted"><time datetime="<%= o.date %>"><%= fmt.dateTime(o.date) %></time></td>
+                <th class="table__cell table__cell--pair" scope="row"><%= o.symbol %></th>
+                <td class="table__cell">
+                  <span class="badge badge--<%= o.side === 'buy' ? 'up' : 'down' %>" data-i18n="common.<%= o.side %>"><%= t('common.' + o.side) %></span>
+                </td>
+                <td class="table__cell" data-i18n="trading.<%= o.type %>"><%= t('trading.' + o.type) %></td>
+                <td class="table__cell table__cell--num"><data value="<%= o.price %>"><%= fmt.price(o.price) %></data></td>
+                <td class="table__cell table__cell--num"><data value="<%= o.qty %>"><%= fmt.qty(o.qty) %></data></td>
+                <td class="table__cell">
+                  <span class="badge badge--<%= statusKind[o.status] %>" data-i18n="orders.statuses.<%= o.status %>"><%= t('orders.statuses.' + o.status) %></span>
+                </td>
+                <td class="table__cell table__cell--action">
+                  <% if (o.status === 'open') { %>
+                  <button
+                    class="button button--secondary button--small"
+                    type="button"
+                    aria-label="<%= t('orders.cancelOrder') %> #<%= o.id %> <%= o.symbol %>"
+                    data-i18n="orders.cancel"
+                  ><%= t('orders.cancel') %></button>
+                  <% } else { %>
+                  <span class="table__empty" aria-hidden="true">—</span>
+                  <span class="visually-hidden" data-i18n="orders.noAction"><%= t('orders.noAction') %></span>
+                  <% } %>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
+        <%- include('partials/pagination', { href: 'orders.html', total: orders.length, label: 'orders.paginationLabel' }) %>
+      </section>
+
+      <aside class="note" aria-labelledby="statuses-title">
+        <h2 class="note__title" id="statuses-title" data-i18n="orders.statusesTitle"><%= t('orders.statusesTitle') %></h2>
+        <dl class="note__list">
+          <% ['open', 'filled', 'cancelled'].forEach((s) => { %>
+          <div class="note__item">
+            <dt class="note__term"><span class="badge badge--<%= statusKind[s] %>" data-i18n="orders.statuses.<%= s %>"><%= t('orders.statuses.' + s) %></span></dt>
+            <dd class="note__desc" data-i18n="orders.statusHelp.<%= s %>"><%= t('orders.statusHelp.' + s) %></dd>
+          </div>
+          <% }) %>
+        </dl>
+      </aside>
+    </main>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('partials/head', { page: 'markets' }) %>
+  </head>
+  <body class="page page--markets">
+    <%- include('partials/header', { active: 'markets' }) %>
+
+    <main class="main container" id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__content">
+          <h1 class="hero__title" id="hero-title" data-i18n="markets.title"><%= t('markets.title') %></h1>
+          <p class="hero__text" data-i18n="markets.lead"><%= t('markets.lead') %></p>
+          <a class="hero__button button button--primary" href="trading.html" data-i18n="markets.startTrading"><%= t('markets.startTrading') %></a>
+        </div>
+        <%- include('partials/picture', {
+          name: 'markets-hero', widths: [480, 800, 1200],
+          sizes: '(min-width: 1280px) 588px, (min-width: 768px) 50vw, 100vw',
+          width: 1200, height: 720, altKey: 'markets.heroAlt', block: 'hero', eager: true
+        }) %>
+      </section>
+
+      <section class="movers" aria-labelledby="movers-title">
+        <h2 class="movers__title" id="movers-title" data-i18n="markets.topMovers"><%= t('markets.topMovers') %></h2>
+        <ul class="movers__list">
+          <% topMovers.forEach((pair) => { %>
+          <li class="movers__item"><%- include('partials/pair-card', { pair }) %></li>
+          <% }) %>
+        </ul>
+      </section>
+
+      <section class="markets" aria-labelledby="markets-title">
+        <h2 class="markets__title" id="markets-title" data-i18n="markets.allMarkets"><%= t('markets.allMarkets') %></h2>
+
+        <form class="filters" role="search" action="index.html" method="get" aria-label="<%= t('markets.filtersLabel') %>" data-i18n-aria-label="markets.filtersLabel">
+          <fieldset class="filters__group filters__group--tabs">
+            <legend class="filters__legend" data-i18n="markets.market"><%= t('markets.market') %></legend>
+            <% ['all', 'spot', 'futures', 'favorites'].forEach((m, i) => { %>
+            <label class="filters__tab">
+              <input class="filters__radio" type="radio" name="market" value="<%= m %>" <%= i === 0 ? 'checked' : '' %> />
+              <span class="filters__tab-text" data-i18n="markets.tabs.<%= m %>"><%= t('markets.tabs.' + m) %></span>
+            </label>
+            <% }) %>
+          </fieldset>
+
+          <div class="filters__field">
+            <label class="filters__label" for="pair-search" data-i18n="markets.search"><%= t('markets.search') %></label>
+            <input
+              class="filters__input"
+              id="pair-search"
+              type="search"
+              name="q"
+              placeholder="<%= t('markets.searchPlaceholder') %>"
+              data-i18n-placeholder="markets.searchPlaceholder"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="filters__field">
+            <label class="filters__label" for="pair-sort" data-i18n="markets.sortBy"><%= t('markets.sortBy') %></label>
+            <select class="filters__select" id="pair-sort" name="sort">
+              <% ['volume_desc', 'change_desc', 'change_asc', 'price_desc', 'price_asc', 'name_asc'].forEach((s) => { %>
+              <option value="<%= s %>" data-i18n="markets.sort.<%= s %>"><%= t('markets.sort.' + s) %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <button class="filters__submit button button--secondary" type="submit" data-i18n="common.apply"><%= t('common.apply') %></button>
+        </form>
+
+        <div class="table-wrap">
+          <table class="table markets__table">
+            <caption class="table__caption" data-i18n="markets.tableCaption"><%= t('markets.tableCaption') %></caption>
+            <thead class="table__head">
+              <tr class="table__row">
+                <th class="table__th" scope="col" data-i18n="markets.cols.pair"><%= t('markets.cols.pair') %></th>
+                <th class="table__th table__th--num" scope="col" data-i18n="markets.cols.price"><%= t('markets.cols.price') %></th>
+                <th class="table__th table__th--num" scope="col" data-i18n="markets.cols.change"><%= t('markets.cols.change') %></th>
+                <th class="table__th table__th--num" scope="col" data-i18n="markets.cols.volume"><%= t('markets.cols.volume') %></th>
+                <th class="table__th table__th--action" scope="col" data-i18n="markets.cols.action"><%= t('markets.cols.action') %></th>
+              </tr>
+            </thead>
+            <tbody class="table__body">
+              <% pairs.slice(0, perPage).forEach((p) => { %>
+              <tr class="table__row">
+                <th class="table__cell table__cell--pair" scope="row">
+                  <a class="table__link" href="trading.html?pair=<%= fmt.slug(p.symbol) %>"><%= p.symbol %></a>
+                  <span class="table__sub"><%= p.name %></span>
+                </th>
+                <td class="table__cell table__cell--num"><data value="<%= p.price %>"><%= fmt.price(p.price) %></data></td>
+                <td class="table__cell table__cell--num">
+                  <data class="badge badge--<%= fmt.trend(p.change24h) %>" value="<%= p.change24h %>"><%= fmt.percent(p.change24h) %></data>
+                </td>
+                <td class="table__cell table__cell--num"><data value="<%= p.volume24h %>"><%= fmt.compact(p.volume24h) %></data></td>
+                <td class="table__cell table__cell--action">
+                  <a
+                    class="button button--primary button--small"
+                    href="trading.html?pair=<%= fmt.slug(p.symbol) %>"
+                    aria-label="<%= t('markets.trade') %> <%= p.symbol %>"
+                    data-i18n="markets.trade"
+                  ><%= t('markets.trade') %></a>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
+        <%- include('partials/pagination', { href: 'index.html', total: pairs.length, label: 'markets.paginationLabel' }) %>
+      </section>
+
+      <aside class="note" aria-labelledby="note-title">
+        <h2 class="note__title" id="note-title" data-i18n="markets.noteTitle"><%= t('markets.noteTitle') %></h2>
+        <p class="note__text" data-i18n="markets.noteText"><%= t('markets.noteText') %></p>
+      </aside>
+    </main>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('partials/head', { page: 'trading' }) %>
+  </head>
+  <body class="page page--trading">
+    <%- include('partials/header', { active: 'trade' }) %>
+    <% const pair = pairs[0]; %>
+
+    <main class="main container" id="main">
+      <section class="pair-bar" aria-labelledby="pair-title">
+        <div class="pair-bar__heading">
+          <h1 class="pair-bar__title" id="pair-title">
+            <span data-i18n="trading.title"><%= t('trading.title') %></span> <%= pair.symbol %>
+          </h1>
+          <p class="pair-bar__name"><%= pair.name %> · <span data-i18n="markets.tabs.spot"><%= t('markets.tabs.spot') %></span></p>
+        </div>
+        <p class="pair-bar__price pair-bar__price--<%= fmt.trend(pair.change24h) %>">
+          <data value="<%= pair.price %>"><%= fmt.price(pair.price) %></data> USDT
+        </p>
+        <dl class="pair-bar__stats stats">
+          <div class="stats__item">
+            <dt class="stats__label" data-i18n="trading.change24h"><%= t('trading.change24h') %></dt>
+            <dd class="stats__value stats__value--<%= fmt.trend(pair.change24h) %>"><data value="<%= pair.change24h %>"><%= fmt.percent(pair.change24h) %></data></dd>
+          </div>
+          <div class="stats__item">
+            <dt class="stats__label" data-i18n="trading.high24h"><%= t('trading.high24h') %></dt>
+            <dd class="stats__value"><data value="<%= pair.high24h %>"><%= fmt.price(pair.high24h) %></data></dd>
+          </div>
+          <div class="stats__item">
+            <dt class="stats__label" data-i18n="trading.low24h"><%= t('trading.low24h') %></dt>
+            <dd class="stats__value"><data value="<%= pair.low24h %>"><%= fmt.price(pair.low24h) %></data></dd>
+          </div>
+          <div class="stats__item">
+            <dt class="stats__label" data-i18n="trading.volume24h"><%= t('trading.volume24h') %></dt>
+            <dd class="stats__value"><data value="<%= pair.volume24h %>"><%= fmt.compact(pair.volume24h) %></data></dd>
+          </div>
+        </dl>
+      </section>
+
+      <div class="trade">
+        <div class="trade__main">
+          <section class="chart" aria-labelledby="chart-title">
+            <header class="chart__header">
+              <h2 class="chart__title" id="chart-title" data-i18n="trading.chart"><%= t('trading.chart') %></h2>
+              <ul class="chart__intervals" aria-label="<%= t('trading.interval') %>" data-i18n-aria-label="trading.interval">
+                <% ['1H', '4H', '1D', '1W'].forEach((iv) => { %>
+                <li class="chart__interval">
+                  <button class="chart__interval-button" type="button" aria-pressed="<%= iv === '4H' ? 'true' : 'false' %>"><%= iv %></button>
+                </li>
+                <% }) %>
+              </ul>
+            </header>
+            <figure class="chart__figure">
+              <%- include('partials/picture', {
+                name: 'trade-chart', widths: [400, 800, 1200],
+                sizes: '(min-width: 1280px) 752px, (min-width: 768px) 60vw, 100vw',
+                width: 1200, height: 500, altKey: 'trading.chartAlt', block: 'chart', eager: true
+              }) %>
+              <figcaption class="chart__caption" data-i18n="trading.chartCaption"><%= t('trading.chartCaption') %></figcaption>
+            </figure>
+          </section>
+
+          <section class="trades" aria-labelledby="trades-title">
+            <h2 class="trades__title" id="trades-title" data-i18n="trading.recentTrades"><%= t('trading.recentTrades') %></h2>
+            <div class="table-wrap">
+              <table class="table trades__table">
+                <caption class="table__caption visually-hidden"><%= t('trading.recentTrades') %> <%= pair.symbol %></caption>
+                <thead class="table__head">
+                  <tr class="table__row">
+                    <th class="table__th" scope="col" data-i18n="trading.cols.time"><%= t('trading.cols.time') %></th>
+                    <th class="table__th table__th--num" scope="col" data-i18n="trading.cols.price"><%= t('trading.cols.price') %></th>
+                    <th class="table__th table__th--num" scope="col" data-i18n="trading.cols.amount"><%= t('trading.cols.amount') %></th>
+                    <th class="table__th table__th--action" scope="col" data-i18n="trading.cols.side"><%= t('trading.cols.side') %></th>
+                  </tr>
+                </thead>
+                <tbody class="table__body">
+                  <% tape.forEach((tr) => { %>
+                  <tr class="table__row">
+                    <td class="table__cell"><time datetime="<%= tr.date %>"><%= fmt.time(tr.date) %></time></td>
+                    <td class="table__cell table__cell--num table__cell--<%= tr.side === 'buy' ? 'up' : 'down' %>"><%= fmt.price(tr.price) %></td>
+                    <td class="table__cell table__cell--num"><%= fmt.qty(tr.qty) %></td>
+                    <td class="table__cell table__cell--action">
+                      <span class="badge badge--<%= tr.side === 'buy' ? 'up' : 'down' %>" data-i18n="common.<%= tr.side %>"><%= t('common.' + tr.side) %></span>
+                    </td>
+                  </tr>
+                  <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <aside class="trade__sidebar" aria-label="<%= t('trading.sidebarLabel') %>" data-i18n-aria-label="trading.sidebarLabel">
+          <section class="order-form" aria-labelledby="order-form-title">
+            <h2 class="order-form__title" id="order-form-title" data-i18n="trading.placeOrder"><%= t('trading.placeOrder') %></h2>
+            <form class="order-form__form" action="orders.html" method="get">
+              <fieldset class="order-form__group order-form__group--side">
+                <legend class="order-form__legend" data-i18n="trading.side"><%= t('trading.side') %></legend>
+                <label class="order-form__toggle order-form__toggle--buy">
+                  <input class="order-form__radio" type="radio" name="side" value="buy" checked />
+                  <span data-i18n="common.buy"><%= t('common.buy') %></span>
+                </label>
+                <label class="order-form__toggle order-form__toggle--sell">
+                  <input class="order-form__radio" type="radio" name="side" value="sell" />
+                  <span data-i18n="common.sell"><%= t('common.sell') %></span>
+                </label>
+              </fieldset>
+
+              <fieldset class="order-form__group order-form__group--type">
+                <legend class="order-form__legend" data-i18n="trading.orderType"><%= t('trading.orderType') %></legend>
+                <label class="order-form__toggle">
+                  <input class="order-form__radio" type="radio" name="type" value="limit" checked />
+                  <span data-i18n="trading.limit"><%= t('trading.limit') %></span>
+                </label>
+                <label class="order-form__toggle">
+                  <input class="order-form__radio" type="radio" name="type" value="market" />
+                  <span data-i18n="trading.market"><%= t('trading.market') %></span>
+                </label>
+              </fieldset>
+
+              <div class="order-form__field">
+                <label class="order-form__label" for="order-price" data-i18n="trading.priceLabel"><%= t('trading.priceLabel') %></label>
+                <input class="order-form__input" id="order-price" name="price" type="number" inputmode="decimal" min="0.0001" step="0.01" value="<%= pair.price %>" required />
+              </div>
+
+              <div class="order-form__field">
+                <label class="order-form__label" for="order-amount" data-i18n="trading.amountLabel"><%= t('trading.amountLabel') %></label>
+                <input
+                  class="order-form__input"
+                  id="order-amount"
+                  name="qty"
+                  type="number"
+                  inputmode="decimal"
+                  min="0.0001"
+                  step="0.0001"
+                  placeholder="0.0100"
+                  aria-describedby="order-amount-hint"
+                  required
+                />
+                <p class="order-form__hint" id="order-amount-hint" data-i18n="trading.amountHint"><%= t('trading.amountHint') %></p>
+              </div>
+
+              <dl class="order-form__summary">
+                <div class="order-form__row">
+                  <dt data-i18n="trading.available"><%= t('trading.available') %></dt>
+                  <dd><data value="<%= available %>"><%= fmt.usd(available) %></data> USDT</dd>
+                </div>
+                <div class="order-form__row">
+                  <dt data-i18n="trading.total"><%= t('trading.total') %></dt>
+                  <dd><output class="order-form__total" for="order-price order-amount" name="total">0.00</output> USDT</dd>
+                </div>
+              </dl>
+
+              <button class="order-form__submit button button--primary" type="submit" data-i18n="trading.submit"><%= t('trading.submit') %></button>
+              <p class="order-form__note" data-i18n="trading.note"><%= t('trading.note') %></p>
+            </form>
+          </section>
+
+          <section class="order-book" aria-labelledby="order-book-title">
+            <h2 class="order-book__title" id="order-book-title" data-i18n="trading.orderBook"><%= t('trading.orderBook') %></h2>
+            <table class="table order-book__table">
+              <caption class="table__caption visually-hidden"><%= t('trading.orderBook') %> <%= pair.symbol %></caption>
+              <thead class="table__head">
+                <tr class="table__row">
+                  <th class="table__th" scope="col" data-i18n="trading.cols.price"><%= t('trading.cols.price') %></th>
+                  <th class="table__th table__th--num" scope="col" data-i18n="trading.cols.amount"><%= t('trading.cols.amount') %></th>
+                  <th class="table__th table__th--num" scope="col" data-i18n="trading.cols.total"><%= t('trading.cols.total') %></th>
+                </tr>
+              </thead>
+              <tbody class="table__body order-book__asks">
+                <% book.asks.forEach((r) => { %>
+                <tr class="table__row">
+                  <td class="table__cell table__cell--down"><%= fmt.usd(r.price) %></td>
+                  <td class="table__cell table__cell--num"><%= fmt.qty(r.amount) %></td>
+                  <td class="table__cell table__cell--num"><%= fmt.usd(r.total) %></td>
+                </tr>
+                <% }) %>
+              </tbody>
+              <tbody class="table__body order-book__mid">
+                <tr class="table__row">
+                  <th class="table__cell order-book__last" scope="row" colspan="3">
+                    <data value="<%= pair.price %>"><%= fmt.price(pair.price) %></data>
+                    <span class="order-book__spread"><span data-i18n="trading.spread"><%= t('trading.spread') %></span> <%= fmt.usd(book.spread) %></span>
+                  </th>
+                </tr>
+              </tbody>
+              <tbody class="table__body order-book__bids">
+                <% book.bids.forEach((r) => { %>
+                <tr class="table__row">
+                  <td class="table__cell table__cell--up"><%= fmt.usd(r.price) %></td>
+                  <td class="table__cell table__cell--num"><%= fmt.qty(r.amount) %></td>
+                  <td class="table__cell table__cell--num"><%= fmt.usd(r.total) %></td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </section>
+        </aside>
+      </div>
+    </main>
+
+    <%- include('partials/footer') %>
+  </body>
+</html>
