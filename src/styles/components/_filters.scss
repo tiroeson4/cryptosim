@@ -1,0 +1,48 @@
+@use "../abstracts" as *;
+
+// toolbar above lists: tabs + search + sort
+.filters {
+  @include grid-row(space(4));
+  align-items: end;
+  margin-bottom: space(4);
+
+  &__group--tabs {
+    @include grid-col((xs: 4, md: 8, lg: 5));
+    @include flex(row, flex-start, center, space(1), wrap);
+  }
+
+  &__legend {
+    @include visually-hidden;
+  }
+
+  &__tab {
+    @include radio-tab(tint("up", $tint-soft), c("up"));
+  }
+
+  &__field {
+    @include grid-col((xs: 4, md: 3, lg: 3));
+  }
+
+  &__label {
+    @include field-label;
+  }
+
+  &__input,
+  &__select {
+    @include field-input;
+  }
+
+  &__select {
+    appearance: none;
+    padding-right: space(7);
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+  }
+
+  &__submit {
+    @include grid-col((xs: 4, md: 2, lg: 1));
+  }
+}

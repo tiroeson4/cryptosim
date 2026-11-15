@@ -1,0 +1,45 @@
+@use "../abstracts" as *;
+
+@mixin button-variant($bg, $color, $hover-bg, $border: transparent) {
+  background: $bg;
+  color: $color;
+  border-color: $border;
+
+  &:hover {
+    background: $hover-bg;
+  }
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: space(2);
+  padding: rem(10) space(5);
+  border: 1px solid transparent;
+  border-radius: $radius-sm;
+  white-space: nowrap;
+  cursor: pointer;
+  @include text("label");
+  @include transition(background-color, border-color, transform);
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &--primary {
+    @include button-variant(c("up"), c("bg"), tint("up", 80%));
+  }
+
+  &--secondary {
+    @include button-variant(transparent, c("text"), tint("text", $tint-hover), tint("text", $tint-border));
+  }
+
+  &--danger {
+    @include button-variant(c("down"), c("bg"), tint("down", 80%));
+  }
+
+  &--small {
+    padding: rem(6) rem(14);
+  }
+}

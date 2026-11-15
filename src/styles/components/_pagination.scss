@@ -1,0 +1,50 @@
+@use "../abstracts" as *;
+
+.pagination {
+  @include flex(column, flex-start, center, space(3));
+  margin-top: space(4);
+
+  @include respond(md) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__info {
+    color: tint("text", $tint-muted);
+    @include text("small");
+  }
+
+  &__list {
+    @include flex(row, center, center, space(2), wrap);
+  }
+
+  &__link {
+    display: inline-grid;
+    place-items: center;
+    min-width: space(7);
+    height: space(7);
+    padding-inline: space(3);
+    border: 1px solid tint("text", $tint-border);
+    border-radius: $radius-sm;
+    @include text("label");
+    @include transition(background-color, border-color);
+
+    &:hover {
+      background: tint("text", $tint-hover);
+    }
+
+    &--active,
+    &--active:hover {
+      background: c("up");
+      border-color: c("up");
+      color: c("bg");
+    }
+
+    &--disabled,
+    &--disabled:hover {
+      background: transparent;
+      color: tint("text", 35%);
+      cursor: not-allowed;
+    }
+  }
+}

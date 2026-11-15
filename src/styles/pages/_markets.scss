@@ -1,0 +1,51 @@
+@use "../abstracts" as *;
+
+.hero {
+  @include grid-row(space(5));
+  align-items: center;
+
+  &__content {
+    @include grid-col((xs: 4, md: 4, lg: 6));
+    @include flex(column, flex-start, flex-start, space(4));
+  }
+
+  &__title {
+    @include text("h1");
+
+    @include respond(lg) {
+      font-size: rem(44);
+      line-height: rem(52);
+    }
+  }
+
+  &__text {
+    max-width: 44ch;
+    color: tint("text", $tint-muted);
+  }
+
+  &__picture {
+    @include grid-col((xs: 4, md: 4, lg: 6));
+    overflow: hidden;
+    @include surface;
+    @include animate(appear, 200ms);
+  }
+
+  &__img {
+    width: 100%;
+  }
+}
+
+.movers__list {
+  @include grid-row;
+}
+
+.movers__item {
+  @include grid-col((xs: 2, md: 4, lg: 3));
+}
+
+// phones: keep pair / price / change; the pair name itself links to the trade page
+.markets__table :is(th, td):is(:nth-child(4), :nth-child(5)) {
+  @include respond-down(md) {
+    display: none;
+  }
+}

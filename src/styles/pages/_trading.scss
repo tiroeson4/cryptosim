@@ -1,0 +1,223 @@
+@use "../abstracts" as *;
+
+.pair-bar {
+  @include flex(column, flex-start, stretch, space(4));
+  padding: space(4);
+  @include surface;
+
+  @include respond(lg) {
+    flex-direction: row;
+    align-items: center;
+    gap: space(7);
+    padding: space(5);
+  }
+
+  &__heading {
+    @include flex(column, flex-start, flex-start, rem(2));
+  }
+
+  &__name {
+    color: tint("text", $tint-muted);
+    @include text("caption");
+  }
+
+  &__price {
+    @include text("h2");
+    @include numeric;
+
+    &--up {
+      color: c("up");
+    }
+
+    &--down {
+      color: c("down");
+    }
+  }
+}
+
+.trade {
+  @include grid-row(space(5));
+  align-items: start;
+
+  &__main {
+    @include grid-col((xs: 4, md: 8, lg: 8));
+    @include flex(column, flex-start, stretch, space(5));
+  }
+
+  // tablet: form and order book side by side, desktop: right column
+  &__sidebar {
+    @include grid-col((xs: 4, md: 8, lg: 4));
+    @include grid(1, space(5));
+
+    @include respond(md) {
+      @include grid(2, var(--grid-gutter));
+      align-items: start;
+    }
+
+    @include respond(lg) {
+      @include grid(1, space(5));
+    }
+  }
+}
+
+.chart {
+  padding: space(4);
+  @include surface;
+
+  @include respond(md) {
+    padding: space(5);
+  }
+
+  &__header {
+    @include flex(row, space-between, center, space(3), wrap);
+    margin-bottom: space(4);
+  }
+
+  &__intervals {
+    @include flex(row, flex-start, center, space(1));
+  }
+
+  &__interval-button {
+    padding: rem(6) space(3);
+    border: 0;
+    border-radius: $radius-sm;
+    background: transparent;
+    color: tint("text", $tint-muted);
+    @include text("label");
+    @include transition(background-color, color);
+
+    &:hover {
+      background: tint("text", $tint-hover);
+      color: c("text");
+    }
+
+    &[aria-pressed="true"] {
+      background: tint("up", $tint-soft);
+      color: c("up");
+    }
+  }
+
+  &__img {
+    width: 100%;
+    border-radius: $radius-sm;
+  }
+
+  &__caption {
+    margin-top: space(2);
+    color: tint("text", $tint-muted);
+    @include text("caption");
+  }
+}
+
+.order-form {
+  padding: space(5);
+  @include surface;
+
+  &__title {
+    margin-bottom: space(4);
+  }
+
+  &__form {
+    @include flex(column, flex-start, stretch, space(4));
+  }
+
+  &__group {
+    @include grid(2, space(2));
+  }
+
+  &__legend {
+    @include visually-hidden;
+  }
+
+  &__toggle {
+    @include radio-tab(tint("text", $tint-hover), c("text"));
+
+    > input + span {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  &__toggle--buy {
+    @include radio-tab(tint("up", $tint-soft), c("up"));
+  }
+
+  &__toggle--sell {
+    @include radio-tab(tint("down", $tint-soft), c("down"));
+  }
+
+  &__label {
+    @include field-label;
+  }
+
+  &__input {
+    @include field-input;
+    @include numeric;
+  }
+
+  &__hint {
+    @include field-hint;
+  }
+
+  &__summary {
+    @include flex(column, flex-start, stretch, space(2));
+    @include text("small");
+  }
+
+  &__row {
+    @include flex(row, space-between, center);
+
+    dt {
+      color: tint("text", $tint-muted);
+    }
+
+    dd {
+      @include numeric;
+    }
+  }
+
+  &__total {
+    font-weight: 600;
+  }
+
+  &__submit {
+    width: 100%;
+  }
+
+  &__note {
+    color: tint("text", $tint-muted);
+    @include text("caption");
+  }
+}
+
+.order-book {
+  padding: space(5);
+  @include surface;
+
+  &__title {
+    margin-bottom: space(3);
+  }
+
+  .table__th,
+  .table__cell {
+    padding: rem(3) 0;
+    border-bottom: 0;
+  }
+
+  .table__th:not(:first-child),
+  .table__cell:not(:first-child) {
+    text-align: right;
+  }
+
+  &__last {
+    padding-block: space(3) !important;
+    color: c("up");
+    @include text("h3");
+  }
+
+  &__spread {
+    margin-left: space(2);
+    color: tint("text", $tint-muted);
+    @include text("caption");
+  }
+}

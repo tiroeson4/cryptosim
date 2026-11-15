@@ -1,0 +1,51 @@
+@use "../abstracts" as *;
+
+.nav {
+  &__list {
+    @include flex(row, flex-start, center, space(1));
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  &__link {
+    display: block;
+    padding: space(2) rem(14);
+    border-radius: $radius-sm;
+    color: tint("text", $tint-muted);
+    white-space: nowrap;
+    @include text("label");
+    @include transition(background-color, color);
+
+    &:hover {
+      background: tint("text", $tint-hover);
+      color: c("text");
+    }
+
+    &--active,
+    &--active:hover {
+      background: tint("up", $tint-soft);
+      color: c("up");
+    }
+  }
+}
+
+.balance {
+  @include flex(row, flex-start, center, space(2));
+  padding: rem(6) space(3);
+  border: 1px solid tint("text", $tint-border);
+  border-radius: $radius-pill;
+
+  &__label {
+    color: tint("text", $tint-muted);
+    @include text("caption");
+
+    // phones: only the amount fits next to the logo
+    @include respond-down(md) {
+      @include visually-hidden;
+    }
+  }
+
+  &__value {
+    @include text("label");
+  }
+}

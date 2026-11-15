@@ -1,0 +1,25 @@
+@use "../abstracts" as *;
+
+.badge {
+  display: inline-block;
+  padding: rem(2) space(2);
+  border-radius: $radius-pill;
+  white-space: nowrap;
+  @include text("caption");
+  @include numeric;
+
+  &--up {
+    background: tint("up", $tint-soft);
+    color: c("up");
+  }
+
+  &--down {
+    background: tint("down", $tint-soft);
+    color: c("down");
+  }
+
+  &--neutral {
+    background: tint("text", $tint-hover);
+    color: c("text");
+  }
+}

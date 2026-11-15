@@ -1,0 +1,55 @@
+@use "../abstracts" as *;
+
+.pair-card {
+  position: relative;
+  @include flex(column, flex-start, flex-start, rem(6));
+  height: 100%;
+  padding: space(4);
+  @include surface;
+  @include transition(border-color, transform);
+
+  &:hover {
+    border-color: tint("up", 50%);
+    transform: translateY(-2px);
+  }
+
+  &--down:hover {
+    border-color: tint("down", 50%);
+  }
+
+  &__title {
+    @include text("label");
+  }
+
+  // whole card is clickable, link stays the accessible name
+  &__link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  &__link:focus-visible {
+    outline: none;
+  }
+
+  &:has(&__link:focus-visible) {
+    @include focus-ring;
+  }
+
+  &__name,
+  &__volume {
+    color: tint("text", $tint-muted);
+    @include text("caption");
+  }
+
+  &__price {
+    @include text("h3");
+    @include numeric;
+
+    span {
+      color: tint("text", $tint-muted);
+      @include text("caption");
+    }
+  }
+}

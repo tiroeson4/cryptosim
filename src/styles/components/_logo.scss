@@ -1,0 +1,25 @@
+@use "../abstracts" as *;
+
+.logo {
+  @include flex(row, flex-start, center, rem(10));
+
+  &__mark {
+    display: grid;
+    place-items: center;
+    width: space(6);
+    height: space(6);
+    border-radius: $radius-sm;
+    background: c("up");
+    color: c("bg");
+    @include text("h3");
+    @include transition(transform);
+  }
+
+  &:hover &__mark {
+    transform: rotate(-8deg);
+  }
+
+  &__text {
+    @include text("h3");
+  }
+}

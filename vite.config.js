@@ -27,6 +27,10 @@ export default defineConfig({
   base: "./", // relative URLs, so the build works on GitHub Pages under /<repo>/
   publicDir: resolve(srcDir, "public"),
   plugins: [ejsTemplates()],
+  css: {
+    preprocessorOptions: { scss: { api: "modern-compiler" } },
+    devSourcemap: true,
+  },
   server: { port: 5173, open: true },
   preview: { port: 4173 },
   build: {

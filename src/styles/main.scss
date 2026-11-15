@@ -1,0 +1,41 @@
+// CryptoSim — SCSS entry point (7-1 architecture)
+//   abstracts/  tokens, functions, mixins, grid mixins (no CSS output)
+//   vendors/    third-party style resets
+//   base/       reset, typography, accessibility, animations, utilities, print
+//   layout/     grid, header, footer, main area
+//   components/ reusable BEM blocks
+//   pages/      page-specific blocks
+//   themes/     color themes (CSS custom properties)
+
+@use "vendors/normalize";
+
+@use "themes/dark";
+
+@use "base/reset";
+@use "base/typography";
+@use "base/accessibility";
+@use "base/animations";
+
+@use "layout/grid";
+@use "layout/header";
+@use "layout/footer";
+@use "layout/main";
+
+@use "components/button";
+@use "components/badge";
+@use "components/logo";
+@use "components/nav";
+@use "components/pair-card";
+@use "components/table";
+@use "components/filters";
+@use "components/pagination";
+@use "components/cards";
+
+@use "pages/markets";
+@use "pages/trading";
+@use "pages/orders";
+@use "pages/portfolio";
+
+// utilities and print go last so they can override components
+@use "base/utilities";
+@use "base/print";

@@ -1,0 +1,96 @@
+@use "../abstracts" as *;
+
+// on small screens tables scroll horizontally inside the card
+.table-wrap {
+  overflow-x: auto;
+  @include surface;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  @include text("small");
+  @include numeric;
+
+  &__caption {
+    padding: space(3) space(4) 0;
+    color: tint("text", $tint-muted);
+    text-align: left;
+    caption-side: top;
+    @include text("caption");
+  }
+
+  &__th,
+  &__cell {
+    padding: space(3) space(4);
+    border-bottom: 1px solid tint("text", $tint-border);
+    text-align: left;
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  &__th {
+    color: tint("text", $tint-muted);
+    @include text("caption");
+  }
+
+  &__th--num,
+  &__cell--num,
+  &__th--action,
+  &__cell--action {
+    text-align: right;
+  }
+
+  &__body &__row {
+    @include transition(background-color);
+
+    &:hover {
+      background: tint("text", 4%);
+    }
+  }
+
+  &__body &__row:last-child &__cell,
+  &__foot &__cell {
+    border-bottom: 0;
+  }
+
+  &__foot &__cell {
+    border-top: 1px solid tint("text", $tint-border);
+    @include text("label");
+  }
+
+  &__cell--pair {
+    font-weight: 600;
+  }
+
+  &__cell--up {
+    color: c("up");
+  }
+
+  &__cell--down {
+    color: c("down");
+  }
+
+  &__cell--muted {
+    color: tint("text", $tint-muted);
+  }
+
+  &__link {
+    @include transition(color);
+
+    &:hover {
+      color: c("up");
+    }
+  }
+
+  &__sub {
+    display: block;
+    color: tint("text", $tint-muted);
+    font-weight: 400;
+    @include text("caption");
+  }
+
+  &__empty {
+    color: tint("text", $tint-muted);
+  }
+}

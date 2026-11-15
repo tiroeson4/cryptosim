@@ -1,0 +1,14 @@
+@use "../abstracts" as *;
+
+// orders table has 8 columns: hide "Type" (4) below 1280 and "Amount" (6) on phones
+.orders__table :is(th, td):nth-child(4) {
+  @include respond-down(lg) {
+    display: none;
+  }
+}
+
+.orders__table :is(th, td):nth-child(6) {
+  @include respond-down(md) {
+    display: none;
+  }
+}
