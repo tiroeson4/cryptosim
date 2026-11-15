@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { readFileSync } from "node:fs";
 import ejs from "ejs";
 import { createTemplateData } from "./templates/data.js";
 
@@ -22,16 +23,34 @@ function ejsTemplates() {
   };
 }
 
+// Demo data for the live preview: a copy of api/db.json is published as data/db.json
+// (GitHub Pages has no json-server, the app reads this file in demo mode).
+function demoData() {
+  const dbPath = resolve(projectDir, "api/db.json");
+  return {
+    name: "demo-data",
+    configureServer(server) {
+      server.middlewares.use("/data/db.json", (_req, res) => {
+        res.setHeader("Content-Type", "application/json");
+        res.end(readFileSync(dbPath));
+      });
+    },
+    generateBundle() {
+      this.emitFile({ type: "asset", fileName: "data/db.json", source: readFileSync(dbPath, "utf8") });
+    },
+  };
+}
+
 export default defineConfig({
   root: srcDir,
   base: "./", // relative URLs, so the build works on GitHub Pages under /<repo>/
   publicDir: resolve(srcDir, "public"),
-  plugins: [ejsTemplates()],
+  plugins: [ejsTemplates(), demoData()],
   css: {
     preprocessorOptions: { scss: { api: "modern-compiler" } },
     devSourcemap: true,
   },
-  server: { port: 5173, open: true },
+  server: { port: 5173 },
   preview: { port: 4173 },
   build: {
     outDir: resolve(projectDir, "dist"),
