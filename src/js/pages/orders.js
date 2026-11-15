@@ -5,9 +5,9 @@ import { ordersService } from "../services/index.js";
 import { ListView } from "../components/list-view.js";
 import { Paginator } from "../components/paginator.js";
 import { Dialog } from "../components/dialog.js";
-import { toast } from "../components/toast.js";
 import { HashRouter } from "../core/router.js";
-import { coin, debounce, errorMessage, fmt, html, qs, toNodes } from "../core/utils.js";
+import { coin, debounce, errorMessage, fmt, html, qs } from "../core/utils.js";
+import { cancelOrderOptimistic, tradeUrl } from "../components/order-actions.js";
 import { dialogError, dialogLoading, dialogShell, sideBadge, stat, statusBadge } from "../components/renderers.js";
 
 const PER_PAGE = 8;
@@ -65,6 +65,7 @@ const orderDetails = (o) =>
     actions: html`${o.status === "open"
       ? html`<button class="button button--danger" type="button" data-cancel="${o.id}">Cancel order</button>`
       : ""}
+      <a class="button button--primary" href="${tradeUrl(fmt.slug(o.symbol))}">Trade ${o.symbol}</a>
       <button class="button button--secondary" type="button" data-close>Close</button>`,
   });
 
@@ -136,27 +137,14 @@ export function initOrders() {
     go(readForm());
   });
 
-  // cancel: show "Cancelled" at once, roll back if the server fails
+  // cancel: optimistic update with rollback (shared with the Trade page)
   async function cancelOrder(id) {
-    const row = body.querySelector(`[data-order-id="${id}"]`);
-    const cells = row && [row.querySelector("[data-status]"), row.querySelector("[data-action]")];
-    const snapshot = cells?.map((cell) => [...cell.childNodes].map((n) => n.cloneNode(true)));
-    if (cells) {
-      cells[0].replaceChildren(toNodes(statusBadge("cancelled")));
-      cells[1].replaceChildren();
-    }
-    try {
-      await ordersService.update(id, { status: "cancelled" });
-      toast(html`Order #${id} cancelled`, { type: "success" });
-      if (dialog.node.open) {
-        dialog.close();
-      }
+    const ok = await cancelOrderOptimistic(id, body.querySelector(`[data-order-id="${id}"]`));
+    if (ok) {
+      dialog.close();
       if (state.status === "open") {
         loadList();
       }
-    } catch (error) {
-      cells?.forEach((cell, i) => cell.replaceChildren(...snapshot[i]));
-      toast(html`Could not cancel order #${id}: ${errorMessage(error)}`, { type: "error" });
     }
   }
 

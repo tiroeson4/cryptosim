@@ -7,7 +7,8 @@ import { PriceChart } from "../components/price-chart.js";
 import { OrderBook } from "../components/order-book.js";
 import { toast } from "../components/toast.js";
 import { coin, errorMessage, fmt, html, qs, qsa, storage, toNodes } from "../core/utils.js";
-import { sideBadge } from "../components/renderers.js";
+import { sideBadge, statusBadge } from "../components/renderers.js";
+import { cancelOrderOptimistic, rememberPair, tradeUrl } from "../components/order-actions.js";
 
 const PREFS_KEY = "cryptosim:order-prefs";
 
@@ -26,6 +27,18 @@ const pairBar = (p) => html`
     <div class="stats__item"><dt class="stats__label">24h low</dt><dd class="stats__value">${fmt.price(p.low24h)}</dd></div>
     <div class="stats__item"><dt class="stats__label">24h volume</dt><dd class="stats__value">${fmt.compact(p.volume24h)}</dd></div>
   </dl>`;
+
+const myOrderRow = (o) => html`<tr class="table__row" data-order-id="${o.id}">
+  <td class="table__cell table__cell--muted"><time datetime="${o.date}">${new Date(o.date).toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</time></td>
+  <td class="table__cell">${sideBadge(o.side)}</td>
+  <td class="table__cell">${fmt.cap(o.type)}</td>
+  <td class="table__cell table__cell--num">${fmt.price(o.price)}</td>
+  <td class="table__cell table__cell--num">${fmt.qty(o.qty)}</td>
+  <td class="table__cell" data-status>${statusBadge(o.status)}</td>
+  <td class="table__cell table__cell--action" data-action>${o.status === "open"
+    ? html`<button class="button button--secondary button--small" type="button" data-cancel="${o.id}" aria-label="Cancel order #${o.id}">Cancel</button>`
+    : ""}</td>
+</tr>`;
 
 const tradeRow = (t) => html`<tr class="table__row">
   <td class="table__cell"><time datetime="${t.date}">${new Date(t.date).toISOString().slice(11, 19)}</time></td>
@@ -69,7 +82,10 @@ export async function initTrading() {
   }
 
   // ---------- header ----------
+  rememberPair(fmt.slug(pair.symbol)); // "New order" / "Trade" links open this pair next time
+  qsa('.nav__link[href^="trading.html"]').forEach((link) => (link.href = tradeUrl()));
   document.title = `Trade ${pair.symbol} — CryptoSim`;
+  qsa("[data-pair-symbol]").forEach((node) => (node.textContent = pair.symbol));
   qs(".pair-bar").replaceChildren(toNodes(pairBar(pair)));
   qsa("[data-base]").forEach((node) => (node.textContent = pair.base));
 
@@ -94,6 +110,48 @@ export async function initTrading() {
     }
   }
   loadTrades();
+
+  // ---------- your orders for this pair: Open / All, cancel without leaving the page ----------
+  const myBody = qs("#my-orders-body");
+  const myOrders = new ListView(myBody, {
+    renderItem: myOrderRow,
+    columns: 7,
+    emptyText: `No orders for ${pair.symbol} yet. Place one above.`,
+  });
+  let myFilter = "open";
+  async function loadMyOrders() {
+    myOrders.showLoading(3);
+    try {
+      const { items } = await ordersService.list({
+        pairId: pair.id,
+        status: myFilter === "open" ? "open" : undefined,
+        _sort: "date",
+        _order: "desc",
+        _limit: 10,
+      });
+      myOrders.render(items);
+    } catch (error) {
+      myOrders.showError(errorMessage(error), loadMyOrders);
+    }
+  }
+  qsa("[data-orders-filter]").forEach((button) =>
+    button.addEventListener("click", () => {
+      myFilter = button.dataset.ordersFilter;
+      qsa("[data-orders-filter]").forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+      loadMyOrders();
+    })
+  );
+  myBody.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-cancel]");
+    if (button) {
+      button.disabled = true;
+      const ok = await cancelOrderOptimistic(button.dataset.cancel, button.closest("tr"));
+      if (ok && myFilter === "open") {
+        loadMyOrders();
+      }
+    }
+  });
+  loadMyOrders();
 
   // ---------- order form ----------
   const balanceOf = (asset) => balances.find((b) => b.asset === asset)?.amount ?? 0;
@@ -185,6 +243,7 @@ export async function initTrading() {
       qtyInput.value = "";
       form.elements.note.value = "";
       validator.reset();
+      loadMyOrders();
     } catch (error) {
       toast(html`Order was not placed: ${errorMessage(error)}`, { type: "error" });
     } finally {

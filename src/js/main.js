@@ -2,7 +2,8 @@
 import { Menu } from "./components/menu.js";
 import { initApiStatus } from "./components/api-status.js";
 import { loadPortfolio } from "./services/index.js";
-import { fmt, qs } from "./core/utils.js";
+import { fmt, qs, qsa } from "./core/utils.js";
+import { tradeUrl } from "./components/order-actions.js";
 import { initMarkets } from "./pages/markets.js";
 import { initOrders } from "./pages/orders.js";
 import { initTrading } from "./pages/trading.js";
@@ -11,6 +12,9 @@ import { initProfile } from "./pages/profile.js";
 document.documentElement.classList.add("js");
 
 new Menu(qs(".header"));
+
+// "Trade", "Start trading", "New order" open the pair you traded last time
+qsa('a[href="trading.html"]').forEach((link) => (link.href = tradeUrl()));
 initApiStatus();
 
 // header balance comes from the API on every page

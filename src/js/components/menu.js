@@ -8,6 +8,13 @@ export class Menu {
       return;
     }
     this.button.addEventListener("click", () => this.toggle());
+    // dropdown closes after choosing a link or clicking anywhere outside it
+    this.nav.addEventListener("click", (event) => event.target.closest("a") && this.toggle(false));
+    document.addEventListener("click", (event) => {
+      if (this.isOpen && !this.nav.contains(event.target) && !this.button.contains(event.target)) {
+        this.toggle(false);
+      }
+    });
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && this.isOpen) {
         this.toggle(false);

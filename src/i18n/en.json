@@ -116,7 +116,10 @@
     "orderBook": "Order book",
     "spread": "Spread",
     "noteLabel": "Note (optional)",
-    "notePlaceholder": "e.g. take profit #1"
+    "notePlaceholder": "e.g. take profit #1",
+    "myOrders": "Your orders",
+    "myOrdersFilter": "Show orders",
+    "allOrders": "All orders →"
   },
   "orders": {
     "metaTitle": "Orders",

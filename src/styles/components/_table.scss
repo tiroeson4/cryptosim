@@ -2,6 +2,8 @@
 
 // on small screens tables scroll horizontally inside the card
 .table-wrap {
+  // relative: absolutely positioned visually-hidden text stays inside the scroll box
+  position: relative;
   overflow-x: auto;
   @include surface;
   -webkit-overflow-scrolling: touch;

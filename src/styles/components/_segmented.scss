@@ -1,0 +1,26 @@
+// Segmented control with toggle buttons (aria-pressed)
+@use "../abstracts" as *;
+
+.segmented {
+  @include segmented;
+
+  &__button {
+    padding: rem(5) space(3);
+    border: 0;
+    border-radius: $radius-sm;
+    background: transparent;
+    color: tint("text", $tint-muted);
+    @include text("label");
+    @include transition(background-color, color);
+
+    &:hover {
+      background: tint("text", $tint-hover);
+      color: c("text");
+    }
+
+    &[aria-pressed="true"] {
+      background: tint("up", $tint-soft);
+      color: c("up");
+    }
+  }
+}

@@ -87,7 +87,12 @@
   }
 }
 
+// phones with JS: the nav is a dropdown card under the burger button, over the page
 @include respond-down(md) {
+  .js .header__inner {
+    position: relative;
+  }
+
   .js .header__menu-button {
     display: grid;
     place-items: center;
@@ -100,19 +105,51 @@
     color: c("text");
   }
 
+  .js .header__logo {
+    margin-right: auto;
+  }
+
   .js .header__nav {
-    order: 4;
-    display: none;
+    position: absolute;
+    top: calc(100% + #{space(2)});
+    right: var(--grid-margin);
+    z-index: 30;
+    flex: none;
+    width: min(#{rem(260)}, calc(100vw - 2 * var(--grid-margin)));
+    padding: rem(6);
+    @include surface;
+    box-shadow:
+      0 0 0 1px tint("text", 6%),
+      0 24px 60px -12px rgb(0 0 0 / 0.85);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(#{rem(-8)}) scale(0.97);
+    transform-origin: top right;
+    transition:
+      opacity $duration-fast $ease,
+      transform $duration-base $ease,
+      visibility 0s linear $duration-base;
   }
 
   .js .header--menu-open .header__nav {
-    display: block;
-    @include animate(slide, 0ms, $duration-base);
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity $duration-fast $ease,
+      transform $duration-base $ease;
   }
 
-  .js .header--menu-open .nav__list {
+  .js .header__nav .nav__list {
     flex-direction: column;
     align-items: stretch;
+    gap: rem(2);
+  }
+
+  .js .header__nav .nav__link {
+    padding: space(3) space(4);
+    @include text("body");
+    font-weight: 600;
   }
 
   .js .header--menu-open .header__menu-icon {
@@ -125,10 +162,5 @@
     &::after {
       transform: translateY(-6px) rotate(-45deg);
     }
-  }
-
-  // logo left, balance + burger right
-  .js .header__logo {
-    margin-right: auto;
   }
 }
