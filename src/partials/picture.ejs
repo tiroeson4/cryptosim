@@ -1,0 +1,20 @@
+<%#
+  Responsive image: WebP with PNG fallback, srcset by width.
+  params: name, widths, sizes, width, height, altKey, block, eager
+%>
+<% const set = (ext) => widths.map((w) => `/img/${name}-${w}.${ext} ${w}w`).join(', '); %>
+<picture class="<%= block %>__picture">
+  <source type="image/webp" srcset="<%= set('webp') %>" sizes="<%= sizes %>" />
+  <img
+    class="<%= block %>__img"
+    src="/img/<%= name %>-<%= widths[1] %>.png"
+    srcset="<%= set('png') %>"
+    sizes="<%= sizes %>"
+    width="<%= width %>"
+    height="<%= height %>"
+    alt="<%= t(altKey) %>"
+    data-i18n-alt="<%= altKey %>"
+    loading="<%= typeof eager !== 'undefined' && eager ? 'eager' : 'lazy' %>"
+    decoding="async"
+  />
+</picture>

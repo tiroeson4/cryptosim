@@ -1,0 +1,40 @@
+<a class="skip-link" href="#main" data-i18n="common.skipToContent"><%= t('common.skipToContent') %></a>
+<header class="header">
+  <div class="header__inner container">
+    <a class="header__logo logo" href="index.html" aria-label="CryptoSim — Markets" data-i18n-aria-label="header.logoLabel">
+      <span class="logo__mark" aria-hidden="true">C</span>
+      <span class="logo__text">CryptoSim</span>
+    </a>
+
+    <button
+      class="header__menu-button"
+      type="button"
+      aria-label="<%= t('header.openMenu') %>"
+      data-i18n-aria-label="header.openMenu"
+      aria-expanded="false"
+      aria-controls="main-nav"
+    >
+      <span class="header__menu-icon" aria-hidden="true"></span>
+    </button>
+
+    <nav class="header__nav nav" id="main-nav" aria-label="<%= t('nav.label') %>" data-i18n-aria-label="nav.label">
+      <ul class="nav__list">
+        <% nav.forEach((item) => { const isActive = item.id === active; %>
+        <li class="nav__item">
+          <a
+            class="nav__link<%= isActive ? ' nav__link--active' : '' %>"
+            href="<%= item.href %>"
+            <%- isActive ? 'aria-current="page"' : '' %>
+            data-i18n="nav.<%= item.id %>"
+          ><%= t('nav.' + item.id) %></a>
+        </li>
+        <% }) %>
+      </ul>
+    </nav>
+
+    <p class="header__balance balance">
+      <span class="balance__label" data-i18n="header.balance"><%= t('header.balance') %></span>
+      <data class="balance__value" value="<%= totalBalance.toFixed(2) %>"><%= fmt.usd(totalBalance) %> USDT</data>
+    </p>
+  </div>
+</header>

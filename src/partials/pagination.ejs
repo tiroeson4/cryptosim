@@ -1,0 +1,28 @@
+<%# params: href, total, label %>
+<% const pagesCount = Math.ceil(total / perPage); %>
+<nav class="pagination" aria-label="<%= t(label) %>" data-i18n-aria-label="<%= label %>">
+  <p class="pagination__info">
+    <span data-i18n="pagination.showing"><%= t('pagination.showing') %></span>
+    1–<%= Math.min(perPage, total) %>
+    <span data-i18n="pagination.of"><%= t('pagination.of') %></span>
+    <%= total %>
+  </p>
+  <ul class="pagination__list">
+    <li class="pagination__item">
+      <span class="pagination__link pagination__link--disabled" aria-disabled="true" data-i18n="pagination.prev"><%= t('pagination.prev') %></span>
+    </li>
+    <% for (let p = 1; p <= pagesCount; p++) { %>
+    <li class="pagination__item">
+      <a
+        class="pagination__link<%= p === 1 ? ' pagination__link--active' : '' %>"
+        href="<%= href %>?page=<%= p %>"
+        <%- p === 1 ? 'aria-current="page"' : '' %>
+        aria-label="<%= t('pagination.page') %> <%= p %>"
+      ><%= p %></a>
+    </li>
+    <% } %>
+    <li class="pagination__item">
+      <a class="pagination__link" href="<%= href %>?page=2" rel="next" data-i18n="pagination.next"><%= t('pagination.next') %></a>
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,185 @@
+{
+  "common": {
+    "skipToContent": "Skip to main content",
+    "apply": "Apply",
+    "buy": "Buy",
+    "sell": "Sell"
+  },
+  "header": {
+    "logoLabel": "CryptoSim — Markets",
+    "openMenu": "Open menu",
+    "balance": "Balance"
+  },
+  "nav": {
+    "label": "Main navigation",
+    "markets": "Markets",
+    "trade": "Trade",
+    "orders": "Orders",
+    "portfolio": "Portfolio"
+  },
+  "footer": {
+    "disclaimer": "Educational exchange simulator. No real money involved.",
+    "navLabel": "Footer navigation",
+    "template": "Course template",
+    "apiDocs": "json-server docs",
+    "backToTop": "Back to top"
+  },
+  "pagination": {
+    "showing": "Showing",
+    "of": "of",
+    "prev": "Prev",
+    "next": "Next",
+    "page": "Page"
+  },
+  "markets": {
+    "metaTitle": "Markets",
+    "metaDescription": "Simulated crypto markets: prices, 24h change and volume for 24 trading pairs.",
+    "title": "Markets",
+    "lead": "Practice trading with virtual funds. All prices are simulated.",
+    "startTrading": "Start trading",
+    "heroAlt": "Candlestick price chart with a rising trend on a dark background",
+    "topMovers": "Top movers",
+    "change24h": "24h change",
+    "volShort": "Vol",
+    "allMarkets": "All markets",
+    "filtersLabel": "Filter markets",
+    "market": "Market",
+    "tabs": {
+      "all": "All",
+      "spot": "Spot",
+      "futures": "Futures",
+      "favorites": "Favorites"
+    },
+    "search": "Search",
+    "searchPlaceholder": "Search pair, e.g. BTC",
+    "sortBy": "Sort by",
+    "sort": {
+      "volume_desc": "24h volume: high to low",
+      "change_desc": "24h change: high to low",
+      "change_asc": "24h change: low to high",
+      "price_desc": "Price: high to low",
+      "price_asc": "Price: low to high",
+      "name_asc": "Name: A to Z"
+    },
+    "tableCaption": "Trading pairs with last price, 24h change and 24h volume",
+    "cols": {
+      "pair": "Pair",
+      "price": "Price (USDT)",
+      "change": "24h change",
+      "volume": "24h volume",
+      "action": "Action"
+    },
+    "trade": "Trade",
+    "paginationLabel": "Markets pages",
+    "noteTitle": "About simulated prices",
+    "noteText": "Prices and volumes come from a local json-server and do not reflect real markets. Use CryptoSim to learn how order types and order books work without risking money."
+  },
+  "trading": {
+    "metaTitle": "Trade BTC/USDT",
+    "metaDescription": "Mock trading terminal: price chart, order book, recent trades and a buy/sell order form.",
+    "title": "Trade",
+    "change24h": "24h change",
+    "high24h": "24h high",
+    "low24h": "24h low",
+    "volume24h": "24h volume",
+    "chart": "Price chart",
+    "interval": "Chart interval",
+    "chartAlt": "BTC/USDT price line for the last 4 hours, moving up from about 63,200 to 64,200 USDT",
+    "chartCaption": "Simulated BTC/USDT price, 4-hour interval.",
+    "recentTrades": "Recent trades",
+    "cols": {
+      "time": "Time",
+      "price": "Price",
+      "amount": "Amount",
+      "side": "Side",
+      "total": "Total"
+    },
+    "sidebarLabel": "Order entry and order book",
+    "placeOrder": "Place order",
+    "side": "Side",
+    "orderType": "Order type",
+    "limit": "Limit",
+    "market": "Market",
+    "priceLabel": "Price (USDT)",
+    "amountLabel": "Amount (BTC)",
+    "amountHint": "Minimum 0.0001 BTC.",
+    "available": "Available",
+    "total": "Total",
+    "submit": "Buy BTC",
+    "note": "Orders are simulated. No real funds are used.",
+    "orderBook": "Order book",
+    "spread": "Spread"
+  },
+  "orders": {
+    "metaTitle": "Orders",
+    "metaDescription": "Your simulated orders: open, filled and cancelled, with filters by status and side.",
+    "title": "Orders",
+    "lead": "Track your open, filled and cancelled orders.",
+    "newOrder": "New order",
+    "listTitle": "Order list",
+    "filtersLabel": "Filter orders",
+    "status": "Status",
+    "statuses": {
+      "all": "All",
+      "open": "Open",
+      "filled": "Filled",
+      "cancelled": "Cancelled"
+    },
+    "search": "Search",
+    "searchPlaceholder": "Search by pair",
+    "allSides": "All sides",
+    "tableCaption": "Your orders, newest first",
+    "cols": {
+      "date": "Date",
+      "pair": "Pair",
+      "side": "Side",
+      "type": "Type",
+      "price": "Price (USDT)",
+      "amount": "Amount",
+      "status": "Status",
+      "action": "Action"
+    },
+    "cancelOrder": "Cancel order",
+    "cancel": "Cancel",
+    "noAction": "No action available",
+    "paginationLabel": "Orders pages",
+    "statusesTitle": "Order statuses",
+    "statusHelp": {
+      "open": "Waiting in the order book until the price reaches your limit.",
+      "filled": "Executed. The coins are already in your portfolio.",
+      "cancelled": "Removed before execution. Reserved funds were returned."
+    }
+  },
+  "portfolio": {
+    "metaTitle": "Portfolio",
+    "metaDescription": "Demo balances, asset allocation and trade history of your CryptoSim account.",
+    "title": "Portfolio",
+    "lead": "Your demo balances and trade history.",
+    "summary": "Summary",
+    "totalBalance": "Total balance",
+    "startedWith": "Started with 10,000.00 USDT",
+    "available": "Available",
+    "availableHint": "Free for new orders",
+    "pnl": "PnL 24h",
+    "balances": "Balances",
+    "balancesCaption": "Assets in your demo account and their value in USDT",
+    "cols": {
+      "asset": "Asset",
+      "amount": "Amount",
+      "price": "Price (USDT)",
+      "value": "Value (USDT)",
+      "totalUsdt": "Total (USDT)"
+    },
+    "total": "Total",
+    "allocation": "Allocation",
+    "growthAlt": "Area chart of the demo portfolio value growing over the last 30 days",
+    "history": "Trade history",
+    "historyCaption": "Your filled trades, newest first",
+    "resetTitle": "Reset demo balance",
+    "resetText": "Start over with a fresh virtual balance. Your order history will be cleared.",
+    "resetAmount": "Starting balance (USDT)",
+    "nickname": "Trader nickname",
+    "nicknameHint": "3–20 characters: letters, numbers or underscore.",
+    "resetButton": "Reset balance"
+  }
+}

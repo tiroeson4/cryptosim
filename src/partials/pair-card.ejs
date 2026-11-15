@@ -1,0 +1,23 @@
+<%# Pair card with schema.org Product + Offer microdata %>
+<article class="pair-card pair-card--<%= fmt.trend(pair.change24h) %>" itemscope itemtype="https://schema.org/Product">
+  <h3 class="pair-card__title">
+    <a class="pair-card__link" href="trading.html?pair=<%= fmt.slug(pair.symbol) %>" itemprop="url">
+      <span itemprop="name"><%= pair.symbol %></span>
+    </a>
+  </h3>
+  <p class="pair-card__name" itemprop="description"><%= pair.name %></p>
+  <meta itemprop="sku" content="<%= fmt.slug(pair.symbol) %>" />
+  <p class="pair-card__price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+    <data itemprop="price" value="<%= pair.price %>"><%= fmt.price(pair.price) %></data>
+    <span itemprop="priceCurrency" content="USD">USDT</span>
+    <link itemprop="availability" href="https://schema.org/InStock" />
+  </p>
+  <p class="pair-card__change badge badge--<%= fmt.trend(pair.change24h) %>">
+    <span class="visually-hidden" data-i18n="markets.change24h"><%= t('markets.change24h') %>:</span>
+    <data value="<%= pair.change24h %>"><%= fmt.percent(pair.change24h) %></data>
+  </p>
+  <p class="pair-card__volume">
+    <span data-i18n="markets.volShort"><%= t('markets.volShort') %></span>
+    <data value="<%= pair.volume24h %>"><%= fmt.compact(pair.volume24h) %></data>
+  </p>
+</article>
