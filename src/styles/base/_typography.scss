@@ -1,0 +1,32 @@
+@use "../abstracts" as *;
+
+// mobile: page title uses H2 size, desktop: H1 (as in the Figma mockups)
+h1 {
+  @include text("h2");
+
+  @include respond(lg) {
+    @include text("h1");
+  }
+}
+
+h2 {
+  @include text("h3");
+
+  @include respond(md) {
+    @include text("h2");
+  }
+}
+
+h3 {
+  @include text("h3");
+}
+
+small {
+  @include text("caption");
+}
+
+data,
+time,
+output {
+  @include numeric;
+}

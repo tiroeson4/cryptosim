@@ -1,0 +1,57 @@
+// Print styles: light paper, no navigation and controls, readable tables.
+@media print {
+  :root {
+    --color-bg: #fff;
+    --color-surface: #fff;
+    --color-text: #000;
+    --color-up: #0a7a4f;
+    --color-down: #b3121d;
+  }
+
+  body {
+    font-size: 11pt;
+  }
+
+  .skip-link,
+  .header__nav,
+  .header__menu-button,
+  .filters,
+  .pagination,
+  .button,
+  .order-form,
+  .reset,
+  .chart__intervals,
+  picture {
+    display: none !important;
+  }
+
+  .main {
+    padding: 0 !important;
+  }
+
+  .table-wrap {
+    overflow: visible !important;
+  }
+
+  .table__row {
+    break-inside: avoid;
+  }
+
+  section,
+  aside {
+    break-inside: avoid-page;
+  }
+
+  // show where external links go
+  .footer__link[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-shadow: none !important;
+    animation: none !important;
+  }
+}

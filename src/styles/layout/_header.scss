@@ -1,0 +1,57 @@
+@use "../abstracts" as *;
+
+.header {
+  position: relative;
+  z-index: 10;
+
+  // sticky only where the header is one compact row
+  @include respond(md) {
+    position: sticky;
+    top: 0;
+  }
+
+  background: color-mix(in srgb, c("surface") 92%, transparent);
+  border-bottom: 1px solid tint("text", $tint-border);
+  backdrop-filter: blur(8px);
+
+  &__inner {
+    @include flex(row, space-between, center, space(3) space(4), wrap);
+    padding-block: space(3);
+
+    @include respond(md) {
+      flex-wrap: nowrap;
+      min-height: $header-height;
+      padding-block: space(2);
+    }
+  }
+
+  &__logo {
+    order: 1;
+  }
+
+  &__balance {
+    order: 2;
+  }
+
+  // mobile: navigation is a scrollable row under the logo
+  &__nav {
+    order: 3;
+    flex: 1 0 100%;
+
+    @include respond(md) {
+      order: 2;
+      flex: 0 1 auto;
+    }
+  }
+
+  @include respond(md) {
+    &__balance {
+      order: 3;
+    }
+  }
+
+  // the menu button needs JS (Lab 4), until then the nav is always visible
+  &__menu-button {
+    display: none;
+  }
+}

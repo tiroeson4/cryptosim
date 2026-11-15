@@ -1,0 +1,63 @@
+@use "../abstracts" as *;
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: space(4);
+
+  @media (prefers-reduced-motion: reduce) {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  min-height: 100vh;
+  background: c("bg");
+  color: c("text");
+  font-family: $font-family;
+  -webkit-font-smoothing: antialiased;
+  @include text("body");
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+dl,
+dd,
+fieldset {
+  margin: 0;
+}
+
+fieldset {
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+ul[class],
+ol[class] {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img,
+picture {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  @include focus-ring;
+}

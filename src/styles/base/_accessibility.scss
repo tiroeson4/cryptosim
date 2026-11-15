@@ -1,0 +1,23 @@
+@use "../abstracts" as *;
+
+.visually-hidden {
+  @include visually-hidden;
+}
+
+.skip-link {
+  position: absolute;
+  top: space(2);
+  left: space(2);
+  z-index: 100;
+  padding: space(2) space(4);
+  border-radius: $radius-sm;
+  background: c("up");
+  color: c("bg");
+  @include text("label");
+  transform: translateY(-200%);
+  @include transition(transform);
+
+  &:focus {
+    transform: translateY(0);
+  }
+}

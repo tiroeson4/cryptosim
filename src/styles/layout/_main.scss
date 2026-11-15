@@ -1,0 +1,49 @@
+@use "../abstracts" as *;
+
+.main {
+  @include flex(column, flex-start, stretch, space(6));
+  padding-block: space(5);
+
+  @include respond(lg) {
+    gap: space(7);
+    padding-block: space(7);
+  }
+
+  > * {
+    @include animate(slide);
+  }
+
+  @for $i from 2 through 6 {
+    > :nth-child(#{$i}) {
+      animation-delay: #{($i - 1) * 80}ms;
+    }
+  }
+}
+
+// title + lead + optional action, used on Orders and Portfolio
+.page-head {
+  @include flex(column, flex-start, flex-start, space(4));
+
+  @include respond(md) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+
+  &__text {
+    @include flex(column, flex-start, stretch, space(2));
+  }
+
+  &__lead {
+    color: tint("text", $tint-muted);
+  }
+}
+
+// section heading spacing shared by all content blocks
+.movers__title,
+.markets__title,
+.trades__title,
+.balances__title,
+.history__title {
+  margin-bottom: space(4);
+}
