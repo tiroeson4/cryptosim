@@ -3,7 +3,8 @@
 Course project for "Web technologies and web design" (topic 8 — **Crypto Exchange Simulator**).
 One site that grows lab by lab: Figma design → HTML skeleton → SCSS → JS + API.
 
-- **Live preview:** https://tiroeson4.github.io/cryptosim/
+- **Live preview (latest):** https://tiroeson4.github.io/cryptosim/
+- **Each lab, frozen at its git tag:** [Lab 2](https://tiroeson4.github.io/cryptosim/lab2/) · Lab 3 (`/lab3/`) · Lab 4 (`/lab4/`)
 - **Figma (Lab 1):** https://www.figma.com/design/seAXuDGHSodglgzA6NxtRd/CryptoSim-%E2%80%94-Lab-1
 - Based on the course template [web-template-2025](https://github.com/MarkovDmitriy/web-template-2025)
 
@@ -60,5 +61,5 @@ src/
   js/             api client and store from the template (used in Lab 4)
   styles/         SCSS 7-1 (Lab 3)
 templates/data.js data + formatters for EJS
-.github/workflows/deploy.yml   build and deploy to GitHub Pages on push to main
+.github/workflows/deploy.yml   on push: builds main into / and every tag labN into /labN/, deploys to GitHub Pages
 ```

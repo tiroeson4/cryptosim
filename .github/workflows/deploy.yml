@@ -1,8 +1,12 @@
 name: Deploy to GitHub Pages
 
+# Site layout:
+#   /          -> latest version (main)
+#   /lab2/ ... -> frozen version of each lab, built from git tags lab2, lab3, lab4
 on:
   push:
     branches: [main]
+    tags: ["lab*"]
   workflow_dispatch:
 
 permissions:
@@ -19,16 +23,31 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # need all tags
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run build
+
+      - name: Build latest version (main)
+        run: |
+          npm ci
+          npm run build
+          mkdir -p site
+          cp -r dist/. site/
+
+      - name: Build every lab tag into its own folder
+        run: |
+          for tag in $(git tag -l 'lab*' | sort); do
+            echo "Building $tag"
+            git worktree add --force "../build-$tag" "$tag"
+            (cd "../build-$tag" && npm ci && npx vite build --outDir "$GITHUB_WORKSPACE/site/$tag" --emptyOutDir)
+          done
+
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: site
 
   deploy:
     needs: build
